@@ -95,17 +95,6 @@
             transition: background-color 0.3s ease-in-out;
         }
 
-        /* Original hover for desktop */
-        .flash-btn:hover:not(.flash-on) {
-        background-color: rgba(14, 165, 233, 0.5);
-        }
-
-        /* Disable hover on mobile */
-        body.no-hover .flash-btn:hover:not(.flash-on) {
-            background-color: inherit !important;
-        }
-
-
         .flash-on {
             background-color: #0ea5e9;
             color: white;
@@ -192,40 +181,38 @@
             transition: all 0.2s ease;
         }
 
-        /* Default hover effects (desktop) */
-.device-item:hover {
-    background-color: rgba(64, 64, 64, 0.3);
-    transform: translateX(4px);
-}
+        .device-item:hover {
+            background-color: rgba(64, 64, 64, 0.3);
+            transform: translateX(4px);
+        }
 
-.device-icon:hover {
-    color: #0ea5e9;
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.5));
-}
+        /* Device icon hover effect */
+        .device-icon {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
 
-.icon-option:hover {
-    background-color: rgba(64, 64, 64, 0.5);
-    transform: scale(1.05);
-}
+        .device-icon:hover {
+            color: #0ea5e9;
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.5));
+        }
 
-/* Selected state remains unaffected */
-.icon-option.selected {
-    background-color: rgba(14, 165, 233, 0.2);
-    border-color: #0ea5e9;
-}
+        /* Icon selection styles */
+        .icon-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
 
-/* Disable hover animations for mobile */
-body.no-hover .flash-btn,
-body.no-hover .device-item,
-body.no-hover .device-icon,
-body.no-hover .icon-option {
-    pointer-events: auto; /* allow clicks */
-    background-color: inherit !important;
-    color: inherit !important;
-    transform: none !important;
-    filter: none !important;
-}
+        .icon-option:hover {
+            background-color: rgba(64, 64, 64, 0.5);
+            transform: scale(1.05);
+        }
+
+        .icon-option.selected {
+            background-color: rgba(14, 165, 233, 0.2);
+            border-color: #0ea5e9;
+        }
 
         /* Notification styles */
         .notification {
@@ -931,21 +918,17 @@ function updateConnectionStatus(connected) {
         }
 
         function openModal(modal) {
-            if (currentModal && currentModal !== modal) closeModal(currentModal);
+            // Close current modal if one is open
+            if (currentModal && currentModal !== modal) {
+                closeModal(currentModal);
+            }
             currentModal = modal;
             modal.showModal();
-
-                // Update counter if it’s the name edit modal
-            if (modal === editNameModal) {
-                nameCharCount.textContent = `${nameInput.value.length}/${MAX_NAME_LENGTH}`;
-            }
-
-            setTimeout(() => { 
-                modal.classList.add('is-open'); 
-                modal.classList.remove('is-closing'); 
+            setTimeout(() => {
+                modal.classList.add('is-open');
+                modal.classList.remove('is-closing');
             }, 10);
         }
-
 
         function closeModal(modal) {
             if (modal === currentModal) {
@@ -958,37 +941,6 @@ function updateConnectionStatus(connected) {
                 modal.classList.remove('is-closing');
             }, { once: true });
         }
-
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        // Add a class to <body> if mobile
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        if (isMobileDevice()) {
-            document.body.classList.add('no-hover');
-        }
-        
-        if (isMobileDevice()) {
-    // Remove any stuck :hover styles after touch
-    document.addEventListener('touchstart', () => {
-        document.querySelectorAll('.flash-btn, .device-item, .device-icon, .icon-option').forEach(el => {
-            el.classList.remove('hover'); // in case you use JS hover classes
-            // reset inline styles if needed
-            el.style.backgroundColor = '';
-            el.style.color = '';
-            el.style.transform = '';
-            el.style.filter = '';
-        });
-    });
-}
-
-
-
-        
 
         // Power switch handler
         powerSwitch.addEventListener('change', () => {
