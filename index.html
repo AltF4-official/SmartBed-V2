@@ -95,6 +95,16 @@
             transition: background-color 0.3s ease-in-out;
         }
 
+        .flash-btn:hover:not(.flash-on) {
+            background-color: rgba(14, 165, 233, 0.5);
+        }
+
+        /* Disable hover on mobile */
+        body.no-hover .flash-btn:hover:not(.flash-on) {
+            background-color: inherit !important;
+        }
+
+
         .flash-on {
             background-color: #0ea5e9;
             color: white;
@@ -749,6 +759,15 @@ function updateConnectionStatus(connected) {
                 connectingTitle.textContent = 'Connecting';
             }
         }
+
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        if (isMobileDevice()) {
+            document.body.classList.add('no-hover');
+        }
+
 
         function showTooltip(element, text) {
             if (tooltip) {
