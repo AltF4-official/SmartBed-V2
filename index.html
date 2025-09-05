@@ -964,21 +964,29 @@ function updateConnectionStatus(connected) {
         }
 
         // Add a class to <body> if mobile
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
         if (isMobileDevice()) {
             document.body.classList.add('no-hover');
-
-            // Reset any stuck hover classes on touch
-            document.addEventListener('touchend', () => {
-                document.querySelectorAll('.flash-btn, .device-item, .device-icon, .icon-option').forEach(el => {
-                    el.style.transition = 'none'; // temporarily disable transition
-                    el.style.transform = '';
-                    el.style.backgroundColor = '';
-                    el.style.color = '';
-                    el.style.filter = '';
-                    setTimeout(() => el.style.transition = '', 10); // restore transition
+        }
+        
+        if (isMobileDevice()) {
+    // Remove any stuck :hover styles after touch
+    document.addEventListener('touchstart', () => {
+        document.querySelectorAll('.flash-btn, .device-item, .device-icon, .icon-option').forEach(el => {
+            el.classList.remove('hover'); // in case you use JS hover classes
+            // reset inline styles if needed
+            el.style.backgroundColor = '';
+            el.style.color = '';
+            el.style.transform = '';
+            el.style.filter = '';
         });
     });
 }
+
+
 
         
 
