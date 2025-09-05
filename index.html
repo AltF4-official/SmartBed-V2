@@ -216,6 +216,106 @@
             background-color: rgba(14, 165, 233, 0.2);
             border-color: #0ea5e9;
         }
+
+        /* Notification styles */
+        .notification {
+            padding: 16px 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 280px;
+            max-width: 320px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            animation: progress 4s linear forwards;
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.hide {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+
+        .notification.success {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .notification.success::before {
+            background: #10b981;
+        }
+
+        .notification.info {
+            background: rgba(14, 165, 233, 0.15);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+
+        .notification.info::before {
+            background: #0ea5e9;
+        }
+
+        .notification.warning {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .notification.warning::before {
+            background: #f59e0b;
+        }
+
+        .notification.error {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .notification.error::before {
+            background: #ef4444;
+        }
+
+        /* Notification icon styles */
+        .notification-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        .notification.success .notification-icon {
+            color: #10b981;
+        }
+
+        .notification.info .notification-icon {
+            color: #0ea5e9;
+        }
+
+        .notification.warning .notification-icon {
+            color: #f59e0b;
+        }
+
+        .notification.error .notification-icon {
+            color: #ef4444;
+        }
     </style>
 </head>
 <body class="bg-[#0d0d0d] text-neutral-400 font-inter">
@@ -403,6 +503,9 @@
         </div>
     </dialog>
 
+    <!-- Notification System -->
+    <div id="notification-container" class="fixed top-6 right-6 z-50 flex flex-col gap-3 max-w-sm"></div>
+
     <script>
         const powerSwitch = document.getElementById('power-switch');
         const controls = document.getElementById('controls');
@@ -445,6 +548,7 @@
         const iconGrid = document.getElementById('icon-grid');
         const cancelIconBtn = document.getElementById('cancel-icon-btn');
         const applyIconBtn = document.getElementById('apply-icon-btn');
+        const notificationContainer = document.getElementById('notification-container');
         
         const controlsActiveClasses = ['opacity-100', 'pointer-events-auto'];
         const powerIconActiveClasses = ['stroke-sky-500', 'drop-shadow-[0_0_10px_rgba(14,165,233,0.5)]'];
@@ -481,6 +585,66 @@
             `<path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>`
         ];
 
+        // Notification system
+        function createNotification(type, title, message, duration = 4000) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const iconMap = {
+                success: `<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
+                info: `<path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
+                warning: `<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>`,
+                error: `<path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>`
+            };
+
+            notification.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <svg class="notification-icon mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        ${iconMap[type]}
+                    </svg>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm font-medium text-neutral-200">${title}</div>
+                        <div class="text-xs text-neutral-400 mt-1">${message}</div>
+                    </div>
+                    <button class="close-notification text-neutral-500 hover:text-neutral-300 transition-colors ml-2">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+            // Add close functionality
+            const closeBtn = notification.querySelector('.close-notification');
+            closeBtn.addEventListener('click', () => removeNotification(notification));
+
+            notificationContainer.appendChild(notification);
+
+            // Show notification
+            setTimeout(() => notification.classList.add('show'), 100);
+
+            // Auto remove after duration
+            const autoRemoveTimer = setTimeout(() => removeNotification(notification), duration);
+
+            // Store timer on notification for cleanup
+            notification._autoRemoveTimer = autoRemoveTimer;
+
+            return notification;
+        }
+
+        function removeNotification(notification) {
+            if (notification._autoRemoveTimer) {
+                clearTimeout(notification._autoRemoveTimer);
+            }
+            
+            notification.classList.add('hide');
+            setTimeout(() => {
+                if (notificationContainer.contains(notification)) {
+                    notificationContainer.removeChild(notification);
+                }
+            }, 400);
+        }
+
         function vibrate() {
             if ('vibrate' in navigator) {
                 navigator.vibrate(20);
@@ -505,6 +669,9 @@
                 deviceStatus.textContent = '';
                 deviceStatus.className = 'text-xs text-neutral-500';
                 disconnectBtn.classList.remove('hidden');
+                
+                // Success notification
+                createNotification('success', 'Connected Successfully!', `Now connected to ${currentDeviceName}`);
             } else {
                 statusLed.className = 'w-3 h-3 rounded-full bg-red-500 transition-all duration-300 group-hover:shadow-lg';
                 statusPulse.className = 'absolute inset-0 w-3 h-3 rounded-full bg-red-500 opacity-75 animate-ping';
@@ -513,6 +680,13 @@
                 deviceStatus.textContent = 'Ready to connect';
                 deviceStatus.className = 'text-xs text-sky-400';
                 disconnectBtn.classList.add('hidden');
+                
+                // Info notification for disconnect
+                if (isPowerOn || isFlashing) {
+                    createNotification('warning', 'Device Disconnected', 'Device has been disconnected from the network');
+                } else {
+                    createNotification('info', 'Disconnected', `Disconnected from ${currentDeviceName}`);
+                }
             }
         }
 
@@ -609,6 +783,9 @@
             errorContent.classList.add('hidden');
             startConnectingAnimation();
             
+            // Info notification for connection attempt
+            createNotification('info', 'Connecting...', `Attempting to connect to ${currentDeviceName}`, 2000);
+            
             // Simulate connection attempt with random delay and 30% failure rate
             const delay = Math.random() * 2000 + 1000; // 1-3 seconds
             const willSucceed = Math.random() > 0.3; // 70% success rate
@@ -621,6 +798,7 @@
                 } else {
                     connectingContent.classList.add('hidden');
                     errorContent.classList.remove('hidden');
+                    createNotification('error', 'Connection Failed!', `Unable to connect to ${currentDeviceName}. Check network settings.`);
                 }
             }, delay);
         }
@@ -683,14 +861,25 @@
         }
 
         function setupSlider(slider, input) {
+            let lastValue = input.value;
+            
             slider.addEventListener('input', () => {
                 updateSlider(slider, input);
+                if (input.value !== lastValue) {
+                    lastValue = input.value;
+                    createNotification('info', 'Settings Updated', `${slider.id.includes('on') ? 'On' : 'Off'} duration set to ${input.value}ms`, 2000);
+                }
             });
+            
             input.addEventListener('input', () => {
                 const value = Math.max(50, Math.min(10000, parseInt(input.value) || 50));
                 input.value = value;
                 slider.value = getLinearValue(value, 50, 10000);
                 updateSlider(slider, input);
+                if (value !== lastValue) {
+                    lastValue = value;
+                    createNotification('info', 'Settings Updated', `${slider.id.includes('on') ? 'On' : 'Off'} duration set to ${value}ms`, 2000);
+                }
             });
             updateSlider(slider, input);
         }
@@ -725,6 +914,15 @@
             isPowerOn = powerSwitch.checked;
             vibrate();
             updateUI();
+            
+            if (isPowerOn) {
+                createNotification('success', 'Power On', 'SmartBed controller is now active');
+            } else {
+                createNotification('info', 'Power Off', 'SmartBed controller has been turned off');
+                if (isFlashing) {
+                    createNotification('warning', 'Flash Stopped', 'Flash mode automatically disabled');
+                }
+            }
         });
 
         // Flash button handler
@@ -733,6 +931,12 @@
                 isFlashing = !isFlashing;
                 vibrate();
                 updateUI();
+                
+                if (isFlashing) {
+                    createNotification('success', 'Flash Mode On', 'Device is now flashing');
+                } else {
+                    createNotification('info', 'Flash Mode Off', 'Flash mode has been disabled');
+                }
             }
         });
 
@@ -842,9 +1046,16 @@
         saveNameBtn.addEventListener('click', () => {
             vibrate();
             const newName = nameInput.value.trim();
-            if (newName) {
+            if (newName && newName !== currentDeviceName) {
+                const oldName = currentDeviceName;
                 currentDeviceName = newName;
                 updateDeviceName();
+                createNotification('success', 'Name Updated', `Device renamed from "${oldName}" to "${currentDeviceName}"`);
+            } else if (newName === currentDeviceName) {
+                createNotification('info', 'No Changes', 'Device name was not changed');
+            } else {
+                createNotification('warning', 'Invalid Name', 'Please enter a valid device name');
+                return;
             }
             closeModal(editNameModal);
         });
@@ -863,8 +1074,13 @@
 
         applyIconBtn.addEventListener('click', () => {
             vibrate();
-            currentDeviceIcon = selectedIconIndex;
-            updateDeviceIcon();
+            if (selectedIconIndex !== currentDeviceIcon) {
+                currentDeviceIcon = selectedIconIndex;
+                updateDeviceIcon();
+                createNotification('success', 'Icon Updated', 'Device icon has been changed');
+            } else {
+                createNotification('info', 'No Changes', 'Device icon was not changed');
+            }
             closeModal(iconModal);
         });
 
@@ -898,6 +1114,11 @@
         updateDeviceIcon();
         updateUI();
         populateIconGrid();
+
+        // Welcome notification
+        setTimeout(() => {
+            createNotification('info', 'Welcome to SmartBed!', 'Click the connection status to get started', 5000);
+        }, 1000);
     </script>
 </body>
 </html>
