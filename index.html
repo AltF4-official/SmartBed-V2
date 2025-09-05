@@ -216,12 +216,14 @@
 }
 
 /* Disable hover animations for mobile */
-body.no-hover .device-item:hover,
-body.no-hover .device-icon:hover,
-body.no-hover .icon-option:hover {
+body.no-hover .flash-btn,
+body.no-hover .device-item,
+body.no-hover .device-icon,
+body.no-hover .icon-option {
+    pointer-events: auto; /* allow clicks */
     background-color: inherit !important;
-    transform: none !important;
     color: inherit !important;
+    transform: none !important;
     filter: none !important;
 }
 
@@ -964,7 +966,19 @@ function updateConnectionStatus(connected) {
         // Add a class to <body> if mobile
         if (isMobileDevice()) {
             document.body.classList.add('no-hover');
-        }
+
+            // Reset any stuck hover classes on touch
+            document.addEventListener('touchend', () => {
+                document.querySelectorAll('.flash-btn, .device-item, .device-icon, .icon-option').forEach(el => {
+                    el.style.transition = 'none'; // temporarily disable transition
+                    el.style.transform = '';
+                    el.style.backgroundColor = '';
+                    el.style.color = '';
+                    el.style.filter = '';
+                    setTimeout(() => el.style.transition = '', 10); // restore transition
+        });
+    });
+}
 
         
 
