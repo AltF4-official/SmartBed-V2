@@ -140,35 +140,38 @@
         /* Modal animation styles */
         .modal {
             opacity: 0;
-            transform: translateY(-50px);
-            transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+            transform: translateY(-20px) scale(0.95);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            will-change: opacity, transform;
         }
-        
+
         .modal.is-open {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
-        
+
         .modal.is-closing {
             opacity: 0;
-            transform: translateY(-50px) scale(0.95);
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+            transform: translateY(-20px) scale(0.90);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        /* Loading spinner animation */
-        .loading-spinner {
-            width: 24px;
-            height: 24px;
-            border: 2px solid transparent;
-            border-top: 2px solid #0ea5e9;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+    /* Loading spinner animation */
+    .loading-spinner {
+        width: 28px;
+        height: 28px;
+        border: 3px solid rgba(14, 165, 233, 0.2);
+        border-top: 3px solid #0ea5e9;
+        border-radius: 50%;
+        animation: spin 1s ease-in-out infinite;
+    }
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+    /* Rotation */
+    @keyframes spin {  
+        0%   { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
 
         /* Tooltip styles */
         .tooltip {
@@ -262,6 +265,26 @@
             from { width: 100%; }
             to { width: 0%; }
         }
+
+@keyframes svg-pulse {
+    0% {
+        filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6))
+                drop-shadow(0 0 10px rgba(14, 165, 233, 0.35));
+    }
+    50% {
+        filter: drop-shadow(0 0 12px rgba(14, 165, 233, 0.75))
+                drop-shadow(0 0 18px rgba(14, 165, 233, 0.45));
+    }
+    100% {
+        filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6))
+                drop-shadow(0 0 10px rgba(14, 165, 233, 0.35));
+    }
+}
+
+.power-on-svg {
+    animation: svg-pulse 3s infinite ease-in-out;
+}
+
 
         .notification.show {
             transform: translateX(0);
@@ -577,12 +600,68 @@
         const controlsActiveClasses = ['opacity-100', 'pointer-events-auto'];
         const powerIconActiveClasses = ['stroke-sky-500', 'drop-shadow-[0_0_10px_rgba(14,165,233,0.5)]'];
 
+        //-------------------------------------------------------------------------------------------------------------------
+        // IMPORTANT: CHANGE CONSOLE LOGS TO UPDATE THE ESP32 ---------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------------
+        const ActionHandler = {
+    powerOn: () => {
+        console.log('Power ON'); // Replace this with actual code to power on the ESP32
+    },
+
+    powerOff: () => {
+        console.log('Power OFF'); // Replace this with actual code to power off the ESP32
+    },
+
+    flashOn: () => {
+        console.log('Flash ON'); // Replace this with actual code to turn on flashing on the ESP32
+    },
+
+    flashOff: () => {
+        console.log('Flash OFF'); // Replace this with actual code to turn off flashing on the ESP32
+    },
+
+    flashSettingsSaved: (onTime, offTime) => {
+        console.log(`Flash Settings Saved: On=${onTime}ms Off=${offTime}ms`); // Replace this with actual code to change the flash settings on the ESP32
+    },
+
+    connected: (deviceName) => {
+        console.log(`Connected to ${deviceName}`); // Replace this with actual code to handle connection to the ESP32
+    },
+
+    disconnected: (deviceName) => {
+        console.log(`Disconnected from ${deviceName}`); // Replace this with actual code to handle disconnection from the ESP32
+    },
+};
+
+
+
+
+
+        // Device icon saver
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedIcon = localStorage.getItem('deviceIcon');
+            if (savedIcon !== null) {
+                currentDeviceIcon = parseInt(savedIcon, 10); // as number
+                updateDeviceIcon();
+            }
+        });
+
+        // Device name saver
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('deviceName');
+            if (savedName) {
+                currentDeviceName = savedName;
+                updateDeviceName();
+            }
+        });
+
+
         let isPowerOn = false;
         let isFlashing = false;
         let isConnected = false;
         let hasLoadedOnce = false;
-        let currentDeviceName = 'SmartBed Pro';
-        let currentDeviceIcon = 0;
+        let currentDeviceName = 'SmartBed';
+        let currentDeviceIcon = 2;
         let selectedIconIndex = 0;
         let connectingDotsInterval = null;
         let tooltip = null;
@@ -694,17 +773,13 @@ function updateConnectionStatus(connected) {
         // LED green
         statusLed.className = 'w-3 h-3 rounded-full bg-green-500 transition-all duration-300 group-hover:shadow-lg';
         statusPulse.className = 'absolute inset-0 w-3 h-3 rounded-full bg-green-500 opacity-75 animate-ping';
-
         // Status text
         statusText.textContent = `Connected to ${currentDeviceName}`;
-
         // Device modal text
         deviceStatus.textContent = 'Connected';
         deviceStatus.className = 'text-xs text-green-400';
-
         // Show disconnect button
         disconnectBtn.classList.remove('hidden');
-
         // Notification
         createNotification('success', 'Connected Successfully!', `Now connected to ${currentDeviceName}`);
 
@@ -712,17 +787,13 @@ function updateConnectionStatus(connected) {
         // LED red
         statusLed.className = 'w-3 h-3 rounded-full bg-red-500 transition-all duration-300 group-hover:shadow-lg';
         statusPulse.className = 'absolute inset-0 w-3 h-3 rounded-full bg-red-500 opacity-75 animate-ping';
-
         // Status text
         statusText.textContent = 'No device connected';
-
         // Device modal text
         deviceStatus.textContent = 'Ready to connect';
         deviceStatus.className = 'text-xs text-sky-400';
-
         // Hide disconnect button
         disconnectBtn.classList.add('hidden');
-
         // Notification
         if (hasLoadedOnce) {
             if (isPowerOn || isFlashing) {
@@ -838,19 +909,21 @@ function updateConnectionStatus(connected) {
             connectingContent.classList.remove('hidden');
             errorContent.classList.add('hidden');
             startConnectingAnimation();
-            
-            // Info notification for connection attempt
             createNotification('info', 'Connecting...', `Attempting to connect to ${currentDeviceName}`, 2000);
+
             
             // Simulate connection attempt with random delay and 30% failure rate -- TEMP FOR DEMO
             // Replace this with actual connection logic -----------------------------------------
             const delay = Math.random() * 2000 + 1000; // 1-3 seconds
             const willSucceed = Math.random() > 0.3; // 70% success rate
-            
+            //--------------------------------------------------------------------------------------
+
+
             setTimeout(() => {
                 stopConnectingAnimation();
                 if (willSucceed) {
                     updateConnectionStatus(true);
+                    ActionHandler.connected(currentDeviceName);
                     updateDeviceName();
                     closeModal(connectModal);
                 } else {
@@ -861,23 +934,23 @@ function updateConnectionStatus(connected) {
             }, delay);
         }
 
-        function updateUI() {
-            if (isPowerOn) {
-                controls.classList.add(...controlsActiveClasses);
-                powerIcon.classList.add(...powerIconActiveClasses);
-            } else {
-                controls.classList.remove(...controlsActiveClasses);
-                powerIcon.classList.remove(...powerIconActiveClasses);
-                isFlashing = false;
-            }
+function updateUI() {
+    if (isPowerOn) {
+        controls.classList.add(...controlsActiveClasses);
+        powerIcon.classList.add(...powerIconActiveClasses);
+        powerIcon.classList.add('power-on-svg'); // Glow around the SVG icon
+    } else {
+        controls.classList.remove(...controlsActiveClasses);
+        powerIcon.classList.remove(...powerIconActiveClasses);
+        powerIcon.classList.remove('power-on-svg'); // Remove glow
+        isFlashing = false;
+    }
 
-            if (isFlashing) {
-                flashBtn.classList.add('flash-on');
-            } else {
-                flashBtn.classList.remove('flash-on');
-            }
-            toggleSettingsButton(isFlashing);
-        }
+    if (isFlashing) flashBtn.classList.add('flash-on'); else flashBtn.classList.remove('flash-on');
+    toggleSettingsButton(isFlashing);
+}
+
+
 
         function getLogValue(linear, min, max) {
             const logMin = Math.log(min);
@@ -955,6 +1028,16 @@ function updateConnectionStatus(connected) {
             }, 10);
         }
 
+        function openIconModal() {
+            openModal(iconModal);
+
+            // Clear any old selections
+            document.querySelectorAll('.icon-option').forEach((opt, idx) => {
+                opt.classList.toggle('selected', idx === currentDeviceIcon);
+            });
+        }
+
+
         function closeModal(modal) {
             if (modal === currentModal) {
                 currentModal = null;
@@ -972,16 +1055,19 @@ function updateConnectionStatus(connected) {
             isPowerOn = powerSwitch.checked;
             vibrate();
             updateUI();
-        
+                if (powerSwitch.checked) ActionHandler.powerOn();
+            else ActionHandler.powerOff();
         });
 
-        // Flash button handler
         flashBtn.addEventListener('click', () => {
-            if (isPowerOn) {
-                isFlashing = !isFlashing;
-                vibrate();
-                updateUI();
-
+            if (!isPowerOn) return;
+            vibrate();
+            isFlashing = !isFlashing;
+            updateUI();
+            if (isFlashing) {
+                ActionHandler.flashOn();
+            } else {
+                ActionHandler.flashOff();
             }
         });
 
@@ -994,12 +1080,9 @@ function updateConnectionStatus(connected) {
         closeModalBtn.addEventListener('click', () => {
             vibrate();
             closeModal(settingsModal);
-        });
-
-        settingsModal.addEventListener('click', (e) => {
-            if (e.target === settingsModal) {
-                closeModal(settingsModal);
-            }
+            const onTime = parseInt(onTimeInput.value, 10);
+            const offTime = parseInt(offTimeInput.value, 10);
+            ActionHandler.flashSettingsSaved(onTime, offTime);
         });
 
         // Info modal handlers
@@ -1013,12 +1096,6 @@ function updateConnectionStatus(connected) {
             closeModal(infoModal);
         });
 
-        infoModal.addEventListener('click', (e) => {
-            if (e.target === infoModal) {
-                closeModal(infoModal);
-            }
-        });
-
         // Connection status click handler to show device list
         connectionStatus.addEventListener('click', () => {
             vibrate();
@@ -1029,12 +1106,6 @@ function updateConnectionStatus(connected) {
         closeDeviceModalBtn.addEventListener('click', () => {
             vibrate();
             closeModal(deviceModal);
-        });
-
-        deviceModal.addEventListener('click', (e) => {
-            if (e.target === deviceModal) {
-                closeModal(deviceModal);
-            }
         });
 
         // Device item click handler (only for the main area, not icon or edit button)
@@ -1053,7 +1124,7 @@ function updateConnectionStatus(connected) {
             e.stopPropagation();
             vibrate();
             updateConnectionStatus(false);
-            closeModal(deviceModal);
+            ActionHandler.disconnected(currentDeviceName);
         });
 
         // Device icon click handler
@@ -1077,6 +1148,7 @@ function updateConnectionStatus(connected) {
         cancelNameBtn.addEventListener('click', () => {
             vibrate();
             closeModal(editNameModal);
+            openModal(deviceModal);
         });
 
         saveNameBtn.addEventListener('click', () => {
@@ -1085,6 +1157,7 @@ function updateConnectionStatus(connected) {
             if (newName && newName !== currentDeviceName) {
                 const oldName = currentDeviceName;
                 currentDeviceName = newName;
+                localStorage.setItem('deviceName', currentDeviceName);
                 updateDeviceName();
                 createNotification('success', 'Name Updated', `Device renamed from "${oldName}" to "${currentDeviceName}"`);
             } else if (newName === currentDeviceName) {
@@ -1094,18 +1167,14 @@ function updateConnectionStatus(connected) {
                 return;
             }
             closeModal(editNameModal);
-        });
-
-        editNameModal.addEventListener('click', (e) => {
-            if (e.target === editNameModal) {
-                closeModal(editNameModal);
-            }
+            openModal(deviceModal);
         });
 
         // Icon modal handlers
         cancelIconBtn.addEventListener('click', () => {
             vibrate();
             closeModal(iconModal);
+            openModal(deviceModal);
         });
 
                const nameCharCount = document.getElementById('name-char-count');
@@ -1122,18 +1191,14 @@ function updateConnectionStatus(connected) {
             vibrate();
             if (selectedIconIndex !== currentDeviceIcon) {
                 currentDeviceIcon = selectedIconIndex;
+                localStorage.setItem('deviceIcon', currentDeviceIcon);
                 updateDeviceIcon();
                 createNotification('success', 'Icon Updated', 'Device icon has been changed');
             } else {
                 createNotification('info', 'No Changes', 'Device icon was not changed');
             }
             closeModal(iconModal);
-        });
-
-        iconModal.addEventListener('click', (e) => {
-            if (e.target === iconModal) {
-                closeModal(iconModal);
-            }
+                openModal(deviceModal);
         });
 
         // Connect modal handlers
@@ -1141,13 +1206,6 @@ function updateConnectionStatus(connected) {
             vibrate();
             stopConnectingAnimation();
             closeModal(connectModal);
-        });
-
-        connectModal.addEventListener('click', (e) => {
-            if (e.target === connectModal) {
-                stopConnectingAnimation();
-                closeModal(connectModal);
-            }
         });
 
         // Initialize sliders
