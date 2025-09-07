@@ -21,6 +21,10 @@
       color:var(--fg); 
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
       -webkit-tap-highlight-color: transparent;
+
+      /* ===== FEATURE: Disable bounce / pull in all directions ===== */
+      overscroll-behavior: none;   /* modern browsers */
+      touch-action: none;          /* disables swipe/drag gestures */
     }
 
     main {
@@ -42,21 +46,9 @@
     }
 
     h1 { margin:0 0 8px; font-size:1.25rem; }
-    p { margin:0 0 16px; color:var(--muted); }
-    button {
-      background:var(--accent);
-      color:white;
-      border:none;
-      border-radius:8px;
-      padding:12px 16px;
-      font-size:1rem;
-      cursor:pointer;
-    }
+    p { margin:0; color:var(--muted); }
 
     /* ===== FEATURE: Custom Scroll & Edge-to-Edge UI ===== */
-    body {
-      overscroll-behavior-y: none; /* disables "bounce" scroll on supported browsers */
-    }
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-thumb { background: #333; border-radius:4px; }
     ::-webkit-scrollbar-track { background: #111; }
@@ -66,60 +58,15 @@
   <main>
     <div class="card">
       <h1>PWA Features Demo</h1>
-      <p>Try out the custom PWA enhancements below.</p>
-      <button id="installBtn" style="display:none;">Install App</button>
+      <p>Scrolling & pull gestures are fully disabled — fullscreen feel.</p>
     </div>
   </main>
 
   <script>
-    /* ===== FEATURE: Pull-to-Refresh Prevention (for fullscreen mode) ===== */
-    let lastTouchY = 0;
-    let maybePrevent = false;
-
-    window.addEventListener('touchstart', e => {
-      if (e.touches.length != 1) return;
-      lastTouchY = e.touches[0].clientY;
-      maybePrevent = window.scrollY === 0;
-    }, {passive:false});
-
-    window.addEventListener('touchmove', e => {
-      const touchY = e.touches[0].clientY;
-      const touchYDelta = touchY - lastTouchY;
-      lastTouchY = touchY;
-
-      if (maybePrevent && touchYDelta > 0) {
-        e.preventDefault(); // prevent pull-to-refresh
-        return;
-      }
-    }, {passive:false});
-
-
-    /* ===== FEATURE: Add-to-Home-Screen Prompt (custom install banner) ===== */
-    let deferredPrompt;
-    const installBtn = document.getElementById("installBtn");
-
-    window.addEventListener("beforeinstallprompt", e => {
+    // ===== EXTRA LOCK: prevent touchmove scroll in older browsers =====
+    window.addEventListener("touchmove", e => {
       e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = "inline-block"; // show button
-    });
-
-    installBtn.addEventListener("click", async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      if (choice.outcome === "accepted") {
-        console.log("User installed the app");
-      }
-      deferredPrompt = null;
-      installBtn.style.display = "none";
-    });
-
-
-    /* ===== FEATURE: Install Badge / Notification ===== */
-    window.addEventListener("appinstalled", () => {
-      alert("✅ App installed successfully!");
-    });
+    }, {passive:false});
   </script>
 </body>
 </html>
