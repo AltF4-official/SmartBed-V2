@@ -3,32 +3,123 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>My Simple Page</title>
-
-  <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/rd-d/ALs6j_GEki0sCU3b4H3UdulU-8VvH1MaS4DzkmH0hKzDyDLCZKvYYPQeATJJQ6pNjp-r2fKTRItha6QHAYy1T_3fiJaEaRGkm5UeOoDN2Sty4lg387SZFYAR0wGcrqqkDJJDpw_cjWGgAEgBUWYF9L8p7B6cIagiVXwcSLcO26TqwY7RvJwa4SaMN-RYtajWmJC-eYU7HB7Rb2xMqv8LAwRvKFU9ElF7C45t_gXYHdmrXTcmCXOK7oawnxizyTRpmgGCH8phdOUpo2JS0XL7Yxbogp338Dx1u_8Pv1Oa7OILsGPzY0OqJb_ur--90V1TbCMU3aI9p-OLZ9Sf4sNNpulhlJBvKURfedEOLEFUy4qluF2u-yAyxY6m8YPbIa29mMsmFJeWoBZHfSCqcn_ZbFOAnmeaSsZD8KS8pfGIF7phtgNJFGwjq9FryIfN4QwwX--2RFBZGwNABQNM_WAEqBAigj0EDYQCanVR-D4dsEmuuMAI_KdcKpZx6Cc0QIbDH_rI4F-e81KTWPNKrIA7G4EJBZablnffP_KrhokacsjdYrtwEBHb2yyN5nbaJyXtClXC-7lbV1byxdqJaoZgnoR_WWZ8O6JKgBugH493zxsQG74RigwufSPtMq3QaAWhGB_987b23DFsSJJhOZ5WDNi1TRC2WZ3mXzmnxqxn9AUShkBd7le-cqZrPLj91g_0Q6V8jnP7MvN--Y_esBt9swpTWMgGyw3X2ukfATEbftPt1Cu3tLq-CDDABYVv9HGQaw-mvxMQI4E0J8GdKR7AS3emSi4kX0BbrK7lPxPMtIylZV18moBWWD1tbZdi_r_rIQ5NwGP38_UOlb5CxVxJffzJ6UmkB54IHJcRE785O5ZEqvB1v4BjtEfBsok0SwQA9V0Mf4tW8uvjyQewenqATAl8R-TiTOSTVrXaZhHHkhNwzcArGv0eantNGyh4fqWHywlfTQ6zbXQpJ5rgY4TH9erDkk3oy-lL=w2940-h1602?auditContext=prefetch">
-
-  <!-- Optional iOS full-screen feel (safe to keep even without PWA) -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-  <!-- Optional: status bar / tab color on modern browsers -->
+  <title>PWA Features Demo</title>
   <meta name="theme-color" content="#0d0d0d" />
 
   <style>
-    :root { --bg:#0d0d0d; --fg:#f3f3f3; --muted:#9a9a9a; }
-    html,body { height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
-    main { min-height:100%; display:grid; place-items:center; padding:24px; box-sizing:border-box; }
-    .card { max-width:640px; width:100%; background:#111; border:1px solid #222; border-radius:12px; padding:24px; text-align:center; }
+    :root { 
+      --bg:#0d0d0d; 
+      --fg:#f3f3f3; 
+      --muted:#9a9a9a; 
+      --accent:#3da9fc;
+    }
+
+    html,body {
+      height:100%; 
+      margin:0; 
+      background:var(--bg); 
+      color:var(--fg); 
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    main {
+      min-height:100%; 
+      display:grid; 
+      place-items:center; 
+      padding:24px; 
+      box-sizing:border-box;
+    }
+
+    .card {
+      max-width:640px; 
+      width:100%; 
+      background:#111; 
+      border:1px solid #222; 
+      border-radius:12px; 
+      padding:24px; 
+      text-align:center;
+    }
+
     h1 { margin:0 0 8px; font-size:1.25rem; }
-    p { margin:0; color:var(--muted); }
+    p { margin:0 0 16px; color:var(--muted); }
+    button {
+      background:var(--accent);
+      color:white;
+      border:none;
+      border-radius:8px;
+      padding:12px 16px;
+      font-size:1rem;
+      cursor:pointer;
+    }
+
+    /* ===== FEATURE: Custom Scroll & Edge-to-Edge UI ===== */
+    body {
+      overscroll-behavior-y: none; /* disables "bounce" scroll on supported browsers */
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius:4px; }
+    ::-webkit-scrollbar-track { background: #111; }
   </style>
 </head>
 <body>
   <main>
     <div class="card">
-      <h1>Simple Page</h1>
-      <p>Add this page to your iOS Home Screen to see your custom icon.</p>
+      <h1>PWA Features Demo</h1>
+      <p>Try out the custom PWA enhancements below.</p>
+      <button id="installBtn" style="display:none;">Install App</button>
     </div>
   </main>
+
+  <script>
+    /* ===== FEATURE: Pull-to-Refresh Prevention (for fullscreen mode) ===== */
+    let lastTouchY = 0;
+    let maybePrevent = false;
+
+    window.addEventListener('touchstart', e => {
+      if (e.touches.length != 1) return;
+      lastTouchY = e.touches[0].clientY;
+      maybePrevent = window.scrollY === 0;
+    }, {passive:false});
+
+    window.addEventListener('touchmove', e => {
+      const touchY = e.touches[0].clientY;
+      const touchYDelta = touchY - lastTouchY;
+      lastTouchY = touchY;
+
+      if (maybePrevent && touchYDelta > 0) {
+        e.preventDefault(); // prevent pull-to-refresh
+        return;
+      }
+    }, {passive:false});
+
+
+    /* ===== FEATURE: Add-to-Home-Screen Prompt (custom install banner) ===== */
+    let deferredPrompt;
+    const installBtn = document.getElementById("installBtn");
+
+    window.addEventListener("beforeinstallprompt", e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = "inline-block"; // show button
+    });
+
+    installBtn.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      if (choice.outcome === "accepted") {
+        console.log("User installed the app");
+      }
+      deferredPrompt = null;
+      installBtn.style.display = "none";
+    });
+
+
+    /* ===== FEATURE: Install Badge / Notification ===== */
+    window.addEventListener("appinstalled", () => {
+      alert("✅ App installed successfully!");
+    });
+  </script>
 </body>
 </html>
