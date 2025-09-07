@@ -1,290 +1,35 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>SmartBed Controller</title>
-<meta name="theme-color" content="#0d0d0d">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>My Simple Page</title>
 
-<style>
-  :root{
-    --bg:#0d0d0d; --muted:#94a3b8; --fg:#e6eef6; --accent:#0ea5e9;
-  }
-  html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; -webkit-font-smoothing:antialiased;}
-  .wrap{max-width:820px;margin:28px auto;padding:20px;}
-  header{display:flex;align-items:center;gap:16px}
-  .logo {width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#071017,#0b1720);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.6);}
-  .logo svg{width:34px;height:34px;fill:none;stroke:var(--accent);stroke-width:1.6}
-  h1{margin:0;font-size:20px}
-  .card{background:#0f0f10;border:1px solid rgba(255,255,255,0.03);border-radius:12px;padding:18px;margin-top:18px;box-shadow:0 6px 30px rgba(0,0,0,.6)}
-  .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  .big-btn{padding:12px 18px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--fg);cursor:pointer}
-  .big-btn.primary{background:linear-gradient(90deg,var(--accent),#38bdf8);color:#021018;border:none}
-  label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
-  .row{display:flex;gap:12px;align-items:center}
-  input[type=number]{width:110px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:#0b0b0b;color:var(--fg)}
-  .status {display:flex;gap:10px;align-items:center}
-  .dot{width:10px;height:10px;border-radius:50%;background:#ef4444;box-shadow:0 0 6px rgba(0,0,0,.6)}
-  .dot.green{background:#10b981}
-  pre{margin:0;font-size:13px;color:var(--muted);white-space:pre-wrap}
-  footer{margin-top:16px;color:var(--muted);font-size:13px}
-  @media (max-width:520px){ .controls{flex-direction:column;align-items:stretch} }
-</style>
+  <!-- iOS home screen icon (your custom image) -->
+  <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/rd-d/ALs6j_GZ7uuY0CGtpxeudhYhcokTsNLaZFowkEcdFYira2tGrL-4jh2Lnm2rr46WeZ4fH_iyqAqLcWUvm4JKppEqOsn_WCCAh7mow_L1rwI7pFXkv7KlRuHrUfr2r1yCW1KgfNJrcoJA_mgX9Cpm7Z6eDW0LIp8kPt0YIKW7nqLuzZWoiOdNxiWj5h7Ns8lwXFsIH3jE-h9chbEM2QZbcfqFmj3cxOvgvZiPRHjG8MdLrOtQjPqc3ZHhIaaL1Rr9SgWatce6qTIjX5Q3j4g5kH18WcnrkqQ2G90qcIK6CDFdhlU8WUCuJwrmIOecQxhXvdU9OyFp8vfTZsnWrsiqTsklE8uWxvlM6PfeUWXiBH1RmaErEmWTTtlgk_bn45i1ucDg4CIoJeNtzqak2_ObIGRMrBGWG7eGX8v9mZ8haxi_vayjp2lWXo2VcH2iOuKsXihlDRv0AA30lCIpwoYsFlpdNFz9buHlJVdRsX7Bbyi82ISfPJ3aFPALBo4K3aC9F_GZ5cmcLnLfgly-X-bO98RP5M3TkuR_raO9CYcQ122X5QRUIWlrZTwvepiDhnatOnn35YskUYQdAVEnFWw3WDq19y5MEyIUcNZf2Xgc4XSWM7pyhEUtY9ql9N6vPvCHgkoFmZiRfjUc-hS8gFsfiB_RFvAhumQL3muNAIGMj948PpmKi9YvshYPG5hmGoMglfmxCLoSvF-zn36cI1hIfxG3PnxbO3K2aDUsKaergiHbZ-Z6AUPhXDE_h643FAUrUJib-yFel45k6EhF-y5mYkIWHkU7CPNdxYiU4N7293C662IwsiBYkJ4gA7NO7fQomzcN5i8doJZBkCb616WEvWniepa_hKs9bPx1BILJKu5_jbmKx0mDCZ48rFkqJ3H1CkzA_LkWtTzsUbA2-TFNaoXnMOw-sf-njWisiEo5MrND_ilUjrj-NUY4n7AA7oBm0b1-kHuoE0sDqPD2hq205jdXbQ_9DQFc=w2940-h1602?auditContext=prefetch">
+
+  <!-- Optional iOS full-screen feel (safe to keep even without PWA) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Optional: status bar / tab color on modern browsers -->
+  <meta name="theme-color" content="#0d0d0d" />
+
+  <style>
+    :root { --bg:#0d0d0d; --fg:#f3f3f3; --muted:#9a9a9a; }
+    html,body { height:100%; margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    main { min-height:100%; display:grid; place-items:center; padding:24px; box-sizing:border-box; }
+    .card { max-width:640px; width:100%; background:#111; border:1px solid #222; border-radius:12px; padding:24px; text-align:center; }
+    h1 { margin:0 0 8px; font-size:1.25rem; }
+    p { margin:0; color:var(--muted); }
+  </style>
 </head>
 <body>
-  <main class="wrap">
-    <header>
-      <div class="logo" id="logo-svg" title="SmartBed">
-        <!-- simple inline SVG used later to generate the icon PNGs -->
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="inline-svg-icon">
-          <path d="M3 13c0-2 2-4 5-4h8c3 0 5 2 5 4v3a1 1 0 0 1-1 1h-1v2H5v-2H4a1 1 0 0 1-1-1v-3z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M8 10V6a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div>
-        <h1>SmartBed Controller</h1>
-        <div style="font-size:13px;color:var(--muted)">Add to home screen for an app-like experience</div>
-      </div>
-    </header>
-
+  <main>
     <div class="card">
-      <div class="row" style="justify-content:space-between">
-        <div>
-          <label>Power</label>
-          <div class="controls">
-            <button class="big-btn" id="power-toggle">Toggle Power</button>
-            <button class="big-btn" id="power-on">Power On</button>
-            <button class="big-btn" id="power-off">Power Off</button>
-          </div>
-        </div>
-
-        <div style="text-align:right">
-          <label>Connection</label>
-          <div class="status">
-            <div id="status-dot" class="dot"></div>
-            <div id="status-text">Disconnected</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <label>Flash</label>
-      <div class="controls">
-        <button class="big-btn" id="flash-toggle">Toggle Flash</button>
-        <button class="big-btn" id="flash-on">Flash On</button>
-        <button class="big-btn" id="flash-off">Flash Off</button>
-      </div>
-
-      <div style="height:12px"></div>
-
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <div>
-          <label>On duration (ms)</label>
-          <input id="on-input" type="number" min="10" value="500">
-        </div>
-        <div>
-          <label>Off duration (ms)</label>
-          <input id="off-input" type="number" min="10" value="500">
-        </div>
-        <div style="align-self:end">
-          <button class="big-btn primary" id="save-timings">Apply timings</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <label>Raw status (polls every 2s)</label>
-      <pre id="raw-status">—</pre>
-      <footer>Tip: after first load choose "Add to Home Screen" (iOS: Share → Add to Home Screen)</footer>
+      <h1>Simple Page</h1>
+      <p>Add this page to your iOS Home Screen to see your custom icon.</p>
     </div>
   </main>
-
-<script>
-/*
-  Single-file PWA:
-  - Generates PNG icons from inline SVG, builds a manifest blob, registers it
-  - Registers a service worker created from a blob
-  - Provides a small UI that calls /set and /status on the ESP32
-*/
-
-/* ---------- Utilities ---------- */
-function el(id){return document.getElementById(id);}
-
-async function fetchJson(path, timeoutMs=1200) {
-  try {
-    const controller = new AbortController();
-    const t = setTimeout(()=>controller.abort(), timeoutMs);
-    const resp = await fetch(path, {signal: controller.signal, cache:'no-cache'});
-    clearTimeout(t);
-    if (!resp.ok) throw new Error('HTTP '+resp.status);
-    return await resp.json();
-  } catch (err) {
-    throw err;
-  }
-}
-
-/* ---------- UI hooks ---------- */
-const statusDot = el('status-dot');
-const statusText = el('status-text');
-const rawStatus = el('raw-status');
-const powerToggle = el('power-toggle');
-const powerOnBtn = el('power-on');
-const powerOffBtn = el('power-off');
-const flashToggle = el('flash-toggle');
-const flashOnBtn = el('flash-on');
-const flashOffBtn = el('flash-off');
-const onInput = el('on-input');
-const offInput = el('off-input');
-const saveTimings = el('save-timings');
-
-function setConnected(connected) {
-  statusDot.className = connected ? 'dot green' : 'dot';
-  statusText.textContent = connected ? 'Connected' : 'Disconnected';
-}
-
-/* ---------- Action helpers (talk to ESP) ---------- */
-function setEndpoint(q) { return fetch('/set?' + q, {cache:'no-cache'}).catch(()=>{}); }
-async function getStatus() {
-  try {
-    const s = await fetchJson('/status', 1200);
-    rawStatus.textContent = JSON.stringify(s, null, 2);
-    setConnected(true);
-    // sync UI fields if present
-    if (s.onTime) onInput.value = s.onTime;
-    if (s.offTime) offInput.value = s.offTime;
-  } catch (e) {
-    setConnected(false);
-    rawStatus.textContent = 'Error fetching status: ' + (e.message||e);
-  }
-}
-
-powerToggle.addEventListener('click', ()=> setEndpoint('power=toggle'));
-powerOnBtn.addEventListener('click', ()=> setEndpoint('power=on'));
-powerOffBtn.addEventListener('click', ()=> setEndpoint('power=off'));
-flashToggle.addEventListener('click', ()=> setEndpoint('flash=toggle'));
-flashOnBtn.addEventListener('click', ()=> setEndpoint('flash=on'));
-flashOffBtn.addEventListener('click', ()=> setEndpoint('flash=off'));
-saveTimings.addEventListener('click', ()=>{
-  const onv = Math.max(10, parseInt(onInput.value||0) || 10);
-  const offv = Math.max(10, parseInt(offInput.value||0) || 10);
-  onInput.value = onv; offInput.value = offv;
-  setEndpoint(`onTime=${onv}&offTime=${offv}`);
-});
-
-/* Poll status */
-getStatus();
-setInterval(getStatus, 2000);
-
-
-/* ---------- PWA setup: generate PNG icons from inline SVG ---------- */
-function svgToPngDataUrl(svgEl, size) {
-  const svg = svgEl.outerHTML;
-  const svg64 = btoa(unescape(encodeURIComponent(svg)));
-  const data = 'data:image/svg+xml;base64,' + svg64;
-
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = size;
-  const ctx = canvas.getContext('2d');
-
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      // Fill background so iOS icons look solid
-      ctx.fillStyle = '#0d0d0d';
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-      // center the svg image and scale it preserving aspect
-      const iw = img.width, ih = img.height;
-      const scale = Math.min(size / iw, size / ih) * 0.82; // slight padding
-      const w = iw * scale, h = ih * scale;
-      ctx.drawImage(img, (size - w)/2, (size - h)/2, w, h);
-      const png = canvas.toDataURL('image/png');
-      resolve(png);
-    };
-    img.onerror = (e)=> reject(e);
-    img.src = data;
-  });
-}
-
-/* ---------- Build manifest and apple-touch icon, register service worker ---------- */
-async function setupPWA() {
-  try {
-    const svgIcon = document.getElementById('inline-svg-icon');
-    const icon192 = await svgToPngDataUrl(svgIcon, 192);
-    const icon512 = await svgToPngDataUrl(svgIcon, 512);
-
-    // create manifest blob
-    const manifest = {
-      name: "SmartBed Controller",
-      short_name: "SmartBed",
-      start_url: "/",
-      display: "standalone",
-      theme_color: "#0d0d0d",
-      background_color: "#0d0d0d",
-      icons: [
-        { src: icon192, sizes: "192x192", type: "image/png" },
-        { src: icon512, sizes: "512x512", type: "image/png" }
-      ]
-    };
-    const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-    const manifestURL = URL.createObjectURL(manifestBlob);
-
-    // inject manifest link
-    let link = document.querySelector('link[rel="manifest"]');
-    if (!link) {
-      link = document.createElement('link');
-      link.rel = 'manifest';
-      document.head.appendChild(link);
-    }
-    link.href = manifestURL;
-
-    // set apple-touch-icon (data url works on iOS)
-    let atouch = document.querySelector('link[rel="apple-touch-icon"]');
-    if (!atouch) {
-      atouch = document.createElement('link');
-      atouch.rel = 'apple-touch-icon';
-      document.head.appendChild(atouch);
-    }
-    atouch.href = icon192;
-
-    // Register service worker using a blob URL (keeps everything single-file)
-    if ('serviceWorker' in navigator) {
-      const swCode = `
-        const CACHE = 'smartbed-cache-v1';
-        const ASSETS = ['/', '/favicon.ico', '/']; // main path
-        self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS))); self.skipWaiting(); });
-        self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-        self.addEventListener('fetch', e => {
-          // network first for API endpoints, cache-first for others
-          if (e.request.url.includes('/status') || e.request.url.includes('/set')) {
-            e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
-            return;
-          }
-          e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-        });
-      `;
-      const swBlob = new Blob([swCode], { type: 'application/javascript' });
-      const swUrl = URL.createObjectURL(swBlob);
-      try {
-        await navigator.serviceWorker.register(swUrl);
-        console.log('Service worker registered (blob)');
-      } catch (err) {
-        console.warn('SW registration failed:', err);
-      }
-    }
-
-    console.log('PWA manifest + icons created');
-  } catch (err) {
-    console.warn('PWA setup failed:', err);
-  }
-}
-
-/* Run PWA setup after DOM ready */
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', setupPWA);
-} else {
-  setupPWA();
-}
-</script>
 </body>
 </html>
