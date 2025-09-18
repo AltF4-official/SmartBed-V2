@@ -1,738 +1,755 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>SmartBed</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="apple-touch-icon" href="https://lh3.google.com/u/0/d/1sPMLou4D3SjyjwQsMAlAi3otfEd3PO_U=w2940-h1602-iv1?auditContext=prefetch">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        @layer base {
-            :root {
-                --primary-color: #f1f5f9;
-                --primary-muted-color: #94a3b8;
-                --bg-primary-color: #0c0a09;
-                --bg-secondary-color: #1c1917;
-                --bg-tertiary-color: #292524;
-                --accent-color: #0ea5e9;
-                --success-color: #10b981;
-                --shadow-color: rgba(0, 0, 0, 0.4);
-            }
-        
-            html.dark {
-                color-scheme: dark;
-            }
-        
-            body {
-                font-family: 'Inter', system-ui, sans-serif;
-                background-color: #0d0d0d;
-                color: var(--primary-color);
+        <html lang="en" class="dark">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+            <title>SmartBed</title>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <link rel="apple-touch-icon" href="https://lh3.google.com/u/0/d/1sPMLou4D3SjyjwQsMAlAi3otfEd3PO_U=w2940-h1602-iv1?auditContext=prefetch">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+            <style>
+                @layer base {
+                    :root {
+                        --primary-color: #f1f5f9;
+                        --primary-muted-color: #94a3b8;
+                        --bg-primary-color: #0c0a09;
+                        --bg-secondary-color: #1c1917;
+                        --bg-tertiary-color: #292524;
+                        --accent-color: #0ea5e9;
+                        --success-color: #10b981;
+                        --shadow-color: rgba(0, 0, 0, 0.4);
+                    }
                 
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                overflow: hidden;
-                transition: all 0.3s ease-in-out;
-
-                overscroll-behavior: none;
-                touch-action: none;
-            }
+                    html.dark {
+                        color-scheme: dark;
+                    }
+                
+                    body {
+                        font-family: 'Inter', system-ui, sans-serif;
+                        background-color: #0d0d0d;
+                        color: var(--primary-color);
+                        
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 100vh;
+                        overflow: hidden;
+                        transition: all 0.3s ease-in-out;
         
-            /* Hide the default checkbox */
-            input[type="checkbox"] {
-                display: none;
-            }
+                        overscroll-behavior: none;
+                        touch-action: none;
+                    }
+                    
+                    input[type="checkbox"] {
+                        display: none;
+                    }
 
-                user-select: none;
-                -webkit-user-select: none;
-                -ms-user-select: none;
+                    body {
+                        user-select: none;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        -webkit-touch-callout: none;
+                        -webkit-tap-highlight-color: transparent;
+                    }
 
-            /* Custom slider thumb styles for WebKit browsers (Chrome, Safari) */
-            input[type="range"]::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                appearance: none;
+                    input[type="range"]::-webkit-slider-thumb {
+                        -webkit-appearance: none;
+                        appearance: none;
+                        width: 28px;
+                        height: 28px;
+                        background: rgb(23, 23, 23);
+                        border: 2px solid #0ea5e9;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        transition: box-shadow 0.25s;
+                    }
+
+                    input[type="range"]::-moz-range-thumb {
+                        width: 28px;
+                        height: 28px;
+                        background: rgb(23, 23, 23);
+                        border: 2px solid #0ea5e9;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        transition: box-shadow 0.25s;
+                    }
+                }
+                
+                /* Track */
+                input[type='range'] {
+                    -webkit-appearance: none;
+                    width: 100%;
+                    height: 2px;
+                    background: #0ea5e9;
+                    border-radius: 1px;
+                    outline: none;
+                    cursor: pointer;
+                }
+
+                input[type='range']:hover::-webkit-slider-thumb,
+                input[type='range']:hover::-moz-range-thumb {
+                    box-shadow: 0 0 10px #0ea5e9;
+                }
+                input[type='range']:active::-webkit-slider-thumb,
+                input[type='range']:active::-moz-range-thumb {
+                    box-shadow: 0 0 20px #0ea5e9;
+                }
+
+                #flash-btn:hover:not(.flash-on) {
+                    border-color: #0ea5e9;
+                }
+
+                .flash-btn {
+                    transition: background-color 0.3s ease-in-out;
+                }
+        
+                .flash-btn:hover:not(.flash-on) {
+                    background-color: rgba(14, 165, 233, 0.5);
+                }
+
+                body.no-hover .flash-btn:hover:not(.flash-on) {
+                    background-color: inherit !important;
+                    border-color: #737373 !important;
+                }
+        
+        
+                .flash-on {
+                    background-color: #0ea5e9;
+                    color: white;
+                    border-color: #0ea5e9 !important;
+                }
+
+                .controls {
+                    transition: opacity 0.3s ease-in-out;
+                }
+
+                .settings-btn {
+                    position: absolute;
+                    transform: scale(0) translateX(5rem);
+                    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+                    opacity: 0;
+                    pointer-events: none;
+                }
+        
+                .settings-btn.show {
+                    opacity: 1;
+                    transform: scale(1) translateX(5rem);
+                    pointer-events: auto;
+                }
+
+                .modal {
+                    opacity: 0;
+                    transform: translateY(-20px) scale(0.95);
+                    transition: opacity 0.35s ease, transform 0.35s ease;
+                    will-change: opacity, transform;
+                }
+        
+                .modal.is-open {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+        
+                .modal.is-closing {
+                    opacity: 0;
+                    transform: translateY(-20px) scale(0.90);
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                }
+            /* Spinny thing */
+            .loading-spinner {
                 width: 28px;
                 height: 28px;
-                background: rgb(23, 23, 23);
-                border: 2px solid #0ea5e9;
+                border: 3px solid rgba(14, 165, 233, 0.2);
+                border-top: 3px solid #0ea5e9;
                 border-radius: 50%;
-                cursor: pointer;
-                transition: box-shadow 0.25s;
+                animation: spin 1s ease-in-out infinite;
             }
 
-            /* Custom slider thumb styles for Firefox */
-            input[type="range"]::-moz-range-thumb {
-                width: 28px;
-                height: 28px;
-                background: rgb(23, 23, 23);
-                border: 2px solid #0ea5e9;
-                border-radius: 50%;
-                cursor: pointer;
-                transition: box-shadow 0.25s;
+            /* Spinny thing animation */
+            @keyframes spin {  
+                0%   { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+                .tooltip {
+                    position: absolute;
+                    background: rgba(23, 23, 23, 0.95);
+                    color: #d4d4d8;
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    white-space: nowrap;
+                    pointer-events: none;
+                    z-index: 1000;
+                    opacity: 0;
+                    transform: translateY(-8px);
+                    transition: opacity 0.2s ease, transform 0.2s ease;
+                    border: 1px solid #404040;
+                }
+        
+                .tooltip.show {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+                .device-item {
+                    transition: all 0.2s ease;
+                }
+        
+                .device-item:hover {
+                    background-color: rgba(64, 64, 64, 0.3);
+                    transform: translateX(4px);
+                }
+
+                .device-icon {
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                }
+        
+                .device-icon:hover {
+                    color: #0ea5e9;
+                    transform: scale(1.1);
+                    filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.5));
+                }
+
+                .icon-option {
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                }
+        
+                .icon-option:hover {
+                    background-color: rgba(64, 64, 64, 0.5);
+                    transform: scale(1.05);
+                }
+        
+                .icon-option.selected {
+                    background-color: rgba(14, 165, 233, 0.2);
+                    border-color: #0ea5e9;
+                }
+        
+                .notification {
+                    padding: 10px 14px;
+                    border-radius: 8px;
+                    min-width: 200px;
+                    max-width: 240px;
+                    font-size: 14px;
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+                    transform: translateX(400px);
+                    opacity: 0;
+                    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                    position: relative;
+                    overflow: hidden;
+                }
+        
+        
+        :focus,
+        :active {
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        
+        
+        * {
+          -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Firefox */
+        button::-moz-focus-inner {
+          border: 0;
+        }
+
+        :focus-visible {
+          outline: 2px solid #0ea5e9;
+          outline-offset: 2px;
+        }
+        
+        @keyframes svg-pulse {
+            0% {
+                filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6))
+                        drop-shadow(0 0 10px rgba(14, 165, 233, 0.35));
+            }
+            50% {
+                filter: drop-shadow(0 0 12px rgba(14, 165, 233, 0.75))
+                        drop-shadow(0 0 18px rgba(14, 165, 233, 0.45));
+            }
+            100% {
+                filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6))
+                        drop-shadow(0 0 10px rgba(14, 165, 233, 0.35));
             }
         }
         
-        /* Track */
-        input[type='range'] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 2px;
-            background: #0ea5e9;
-            border-radius: 1px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* Glow only */
-        input[type='range']:hover::-webkit-slider-thumb,
-        input[type='range']:hover::-moz-range-thumb {
-            box-shadow: 0 0 10px #0ea5e9;
-        }
-        input[type='range']:active::-webkit-slider-thumb,
-        input[type='range']:active::-moz-range-thumb {
-            box-shadow: 0 0 20px #0ea5e9;
-        }
-
-        /* Hover effect on desktop */
-        #flash-btn:hover:not(.flash-on) {
-            border-color: #0ea5e9;
-        }
-
-        /* Flash button hover and on state */
-        .flash-btn {
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .flash-btn:hover:not(.flash-on) {
-            background-color: rgba(14, 165, 233, 0.5);
-        }
-
-        /* Disable hover on mobile */
-        body.no-hover .flash-btn:hover:not(.flash-on) {
-            background-color: inherit !important;
-            border-color: #737373 !important;
-        }
-
-
-        .flash-on {
-            background-color: #0ea5e9;
-            color: white;
-            border-color: #0ea5e9 !important;
+        .power-on-svg {
+            animation: svg-pulse 3s infinite ease-in-out;
         }
         
-        /* Main controls container */
-        .controls {
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        /* Position the settings button relative to the centered flash button */
-        .settings-btn {
-            position: absolute;
-            transform: scale(0) translateX(5rem);
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .settings-btn.show {
-            opacity: 1;
-            transform: scale(1) translateX(5rem);
-            pointer-events: auto;
-        }
         
-        /* Modal animation styles */
-        .modal {
-            opacity: 0;
-            transform: translateY(-20px) scale(0.95);
-            transition: opacity 0.35s ease, transform 0.35s ease;
-            will-change: opacity, transform;
-        }
+                .notification.show {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+        
+                .notification.hide {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+        
+                .notification.success {
+                    background: rgba(16, 185, 129, 0.15);
+                    border-color: rgba(16, 185, 129, 0.3);
+                }
+        
+                .notification.info {
+                    background: rgba(14, 165, 233, 0.15);
+                    border-color: rgba(14, 165, 233, 0.3);
+                }
+        
+                .notification.warning {
+                    background: rgba(245, 158, 11, 0.15);
+                    border-color: rgba(245, 158, 11, 0.3);
+                }
+        
+                .notification.error {
+                    background: rgba(239, 68, 68, 0.15);
+                    border-color: rgba(239, 68, 68, 0.3);
+                }
 
-        .modal.is-open {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .modal.is-closing {
-            opacity: 0;
-            transform: translateY(-20px) scale(0.90);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-    /* Loading spinner animation */
-    .loading-spinner {
-        width: 28px;
-        height: 28px;
-        border: 3px solid rgba(14, 165, 233, 0.2);
-        border-top: 3px solid #0ea5e9;
-        border-radius: 50%;
-        animation: spin 1s ease-in-out infinite;
-    }
-
-    /* Rotation */
-    @keyframes spin {  
-        0%   { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-
-        /* Tooltip styles */
-        .tooltip {
-            position: absolute;
-            background: rgba(23, 23, 23, 0.95);
-            color: #d4d4d8;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0;
-            transform: translateY(-8px);
-            transition: opacity 0.2s ease, transform 0.2s ease;
-            border: 1px solid #404040;
-        }
-
-        .tooltip.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Device item hover effects */
-        .device-item {
-            transition: all 0.2s ease;
-        }
-
-        .device-item:hover {
-            background-color: rgba(64, 64, 64, 0.3);
-            transform: translateX(4px);
-        }
-
-        /* Device icon hover effect */
-        .device-icon {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .device-icon:hover {
-            color: #0ea5e9;
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.5));
-        }
-
-        /* Icon selection styles */
-        .icon-option {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .icon-option:hover {
-            background-color: rgba(64, 64, 64, 0.5);
-            transform: scale(1.05);
-        }
-
-        .icon-option.selected {
-            background-color: rgba(14, 165, 233, 0.2);
-            border-color: #0ea5e9;
-        }
-
-        /* Notification styles */
-        .notification {
-            padding: 10px 14px;
-            border-radius: 8px;
-            min-width: 200px;
-            max-width: 260px;
-            font-size: 12px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-            transform: translateX(400px);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            overflow: hidden;
-        }
-/* --- Remove browser blue outline/glow everywhere --- */
-
-/* Chrome / Safari / Edge — all focusable elements */
-:focus,
-:active {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Mobile tap highlight (iOS / Android) */
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Firefox inner focus padding */
-button::-moz-focus-inner {
-  border: 0;
-}
-
-/* Optional: custom focus for accessibility */
-:focus-visible {
-  outline: 2px solid #0ea5e9;  /* change color to fit your theme */
-  outline-offset: 2px;
-}
-        .notification::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            animation: progress 4s linear forwards;
-        }
-
-        @keyframes progress {
-            from { width: 100%; }
-            to { width: 0%; }
-        }
-
-@keyframes svg-pulse {
-    0% {
-        filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6))
-                drop-shadow(0 0 10px rgba(14, 165, 233, 0.35));
-    }
-    50% {
-        filter: drop-shadow(0 0 12px rgba(14, 165, 233, 0.75))
-                drop-shadow(0 0 18px rgba(14, 165, 233, 0.45));
-    }
-    100% {
-        filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6))
-                drop-shadow(0 0 10px rgba(14, 165, 233, 0.35));
-    }
-}
-
-.power-on-svg {
-    animation: svg-pulse 3s infinite ease-in-out;
-}
-
-
-        .notification.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .notification.hide {
-            transform: translateX(400px);
-            opacity: 0;
-        }
-
-        .notification.success {
-            background: rgba(16, 185, 129, 0.15);
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .notification.success::before {
-            background: #10b981;
-        }
-
-        .notification.info {
-            background: rgba(14, 165, 233, 0.15);
-            border-color: rgba(14, 165, 233, 0.3);
-        }
-
-        .notification.info::before {
-            background: #0ea5e9;
-        }
-
-        .notification.warning {
-            background: rgba(245, 158, 11, 0.15);
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        .notification.warning::before {
-            background: #f59e0b;
-        }
-
-        .notification.error {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-
-        .notification.error::before {
-            background: #ef4444;
-        }
-
-        /* Notification icon styles */
+                .notification-icon {
+                    flex-shrink: 0;
+                    width: 20px;
+                    height: 20px;
+                }
+        
         .notification-icon {
             flex-shrink: 0;
             width: 20px;
             height: 20px;
         }
-
+        
         .notification.success .notification-icon {
             color: #10b981;
         }
-
+        
         .notification.info .notification-icon {
             color: #0ea5e9;
         }
-
+        
         .notification.warning .notification-icon {
             color: #f59e0b;
         }
-
+        
         .notification.error .notification-icon {
             color: #ef4444;
         }
-    </style>
-</head>
-<body class="bg-[#0d0d0d] text-neutral-400 font-inter">
+        #notification-container {
+            position: fixed;
+            z-index: 50;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 280px;
+            transition: all 0.3s ease;
+        }
 
-    <!-- Header -->
-    <header class="absolute top-0 left-0 right-0 p-8 flex justify-center items-center">
-        <!-- Logo - Custom SVG Icon -->
-        <div class="absolute left-8 flex items-center gap-2">
-          <svg class="w-12 h-12 text-neutral-500 transition-colors" 
-               xmlns="http://www.w3.org/2000/svg" fill="none" 
-               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path d="M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-            <path d="M22 17v-3h-20" />
-            <path d="M2 8v9" />
-            <path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z" />
-          </svg>
-        </div>
-
-
-        </svg>
-        <!-- Centered "SmartBed" text -->
-        <span class="text-neutral-500 text-lg font-medium">SmartBed</span>
-        <!-- Info button -->
-        <button id="info-btn" class="absolute right-8 p-2 rounded-full text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 transition-colors">
-            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
-        </button>
-    </header>
-
-    <!-- Connection Status Indicator -->
-    <div class="absolute top-20 left-1/2 transform -translate-x-1/2 mt-4">
-        <div id="connection-status" class="flex items-center gap-3 px-6 py-3 bg-neutral-900/80 backdrop-blur-sm border border-neutral-700 rounded-full transition-all duration-300 hover:bg-neutral-800/90 hover:border-neutral-600 hover:scale-105 active:scale-95 cursor-pointer group">
-            <div class="relative">
-                <div id="status-led" class="w-3 h-3 rounded-full bg-red-500 transition-all duration-300 group-hover:shadow-lg"></div>
-                <div id="status-pulse" class="absolute inset-0 w-3 h-3 rounded-full bg-red-500 opacity-75 animate-ping"></div>
-            </div>
-            <span id="status-text" class="text-sm font-medium text-neutral-300 transition-colors duration-300 group-hover:text-neutral-200">No device connected</span>
-        </div>
-    </div>
-
-    <!-- Main Content Container for the power button -->
-    <div class="flex flex-col items-center justify-center w-full my-auto gap-y-12">
-        <!-- Main Power Control -->
-        <label class="relative cursor-pointer transition-all duration-300 transform-gpu hover:scale-105 active:scale-95">
-            <input type="checkbox" id="power-switch">
-            <svg id="power-icon" class="w-28 h-28 stroke-neutral-500 stroke-2 transition-all duration-300 ease-in-out drop-shadow-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/>
-            </svg>
-        </label>
-    </div>
-
-    <!-- Controls Section now fixed at the bottom center of the page -->
-    <div class="fixed bottom-0 left-0 right-0 p-8 flex justify-center items-center z-10">
-        <div id="controls" class="controls w-full max-w-sm flex justify-center items-center opacity-0 pointer-events-none">
-            <button id="flash-btn" class="flash-btn px-6 py-3 rounded-full border border-neutral-600 text-sm font-medium tracking-wide transition-all duration-300">Flash</button>
-            <button id="settings-btn" class="settings-btn text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 p-2 rounded-full">
-                <svg class="w-5 h-5 stroke-current stroke-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-            </button>
-        </div>
-    </div>
-    
-    <!-- Settings Modal -->
-    <dialog id="settings-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-8 max-w-lg w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
-        <div class="flex flex-col gap-8">
-            <div class="flex flex-col gap-3">
-                <div class="flex justify-between items-center">
-                    <span class="text-sm font-medium text-neutral-300">On Duration</span>
-                    <div class="flex items-center gap-2 text-xs font-normal text-neutral-500">
-                        <input type="number" class="w-16 text-center text-xs bg-neutral-800 border border-neutral-700 text-neutral-300 py-1 px-2 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" id="on-time-input" min="50" max="10000" value="500">
-                        <span>ms</span>
-                    </div>
-                </div>
-                <div class="relative">
-                    <input type="range" class="w-full h-1 bg-neutral-700 rounded-full outline-none cursor-pointer transition-all duration-500" id="on-time-slider" min="50" max="10000" value="500">
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-3">
-                <div class="flex justify-between items-center">
-                    <span class="text-sm font-medium text-neutral-300">Off Duration</span>
-                    <div class="flex items-center gap-2 text-xs font-normal text-neutral-500">
-                        <input type="number" class="w-16 text-center text-xs bg-neutral-800 border border-neutral-700 text-neutral-300 py-1 px-2 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" id="off-time-input" min="50" max="10000" value="500">
-                        <span>ms</span>
-                    </div>
-                </div>
-                <div class="relative">
-                    <input type="range" class="w-full h-1 bg-neutral-700 rounded-full outline-none cursor-pointer transition-all duration-500" id="off-time-slider" min="50" max="10000" value="500">
-                </div>
-            </div>
-
-            <button id="close-modal-btn" class="mt-4 px-6 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Apply</button>
-        </div>
-    </dialog>
-
-    <!-- Device Selection Modal -->
-    <dialog id="device-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-6 max-w-md w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
-        <div class="flex flex-col gap-6">
-            <h3 class="text-lg font-medium text-neutral-300 text-center">Devices</h3>
-            <div class="flex flex-col gap-3">
-                <div id="device-item" class="device-item flex items-center gap-4 p-4 rounded-xl border border-neutral-700 cursor-pointer">
-                    <!-- Device Icon -->
-                    <div class="flex-shrink-0">
-                        <svg id="device-icon" class="device-icon w-8 h-8 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
-                        </svg>
-                    </div>
-                    <!-- Device Info -->
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                            <span id="device-name" class="text-neutral-300 font-medium">SmartBed Pro</span>
-                            <svg id="edit-icon" class="w-4 h-4 text-neutral-500 opacity-1 hover:text-sky-400 transition-all cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                            </svg>
-                        </div>
-                        <div class="text-left">
-                            <span id="device-status" class="text-xs text-sky-400">Ready to connect</span>
-                        </div>
-                    </div>
-                    <!-- Disconnect Button -->
-                    <div class="flex-shrink-0">
-                        <button id="disconnect-btn" class="hidden p-2 rounded-full text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <button id="close-device-modal-btn" class="px-6 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Close</button>
-        </div>
-    </dialog>
-
-    <!-- Connection Modal -->
-    <dialog id="connect-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-8 max-w-sm w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
-        <div id="connecting-content" class="flex flex-col items-center gap-6 text-center">
-            <div class="loading-spinner"></div>
-            <div class="flex flex-col gap-2">
-                <h3 id="connecting-title" class="text-lg font-medium text-neutral-300">Connecting</h3>
-                <p class="text-sm text-neutral-400">Establishing connection to <span id="connecting-device-name">SmartBed Pro</span></p>
-            </div>
-        </div>
-        <div id="error-content" class="flex flex-col items-center gap-6 text-center hidden">
-            <svg class="w-12 h-12 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <div class="flex flex-col gap-2">
-                <h3 class="text-lg font-medium text-red-400">Connection Failed!</h3>
-                <p class="text-sm text-neutral-400">Make sure your device and <span id="error-device-name">SmartBed Pro</span> are connected to the same WLAN.</p>
-            </div>
-            <button id="close-connect-modal-btn" class="px-6 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Close</button>
-        </div>
-    </dialog>
-
-    <!-- Device Name Edit Modal -->
-    <dialog id="edit-name-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-6 max-w-sm w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
-        <div class="flex flex-col gap-6">
-            <div class="relative w-full">
-                <input type="text" id="name-input" class="w-full bg-neutral-800 border border-neutral-700 text-neutral-300 py-3 px-4 pr-12 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" placeholder="Enter device name" maxlength="20">
-               <span id="name-char-count" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-neutral-500 pointer-events-none">0/20</span>
-            </div>
-           <div class="flex gap-3">
-                <button id="cancel-name-btn" class="flex-1 px-4 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Cancel</button>
-                <button id="save-name-btn" class="flex-1 px-4 py-3 rounded-full bg-sky-600 text-sm font-medium text-white transition-all duration-300 hover:bg-sky-500">Save</button>
-            </div>
-        </div>
-    </dialog>
-
-    <!-- Icon Selection Modal -->
-    <dialog id="icon-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-6 max-w-md w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
-        <div class="flex flex-col gap-6">
-            <h3 class="text-lg font-medium text-neutral-300 text-center">Choose Device Icon</h3>
-            <div class="grid grid-cols-4 gap-3" id="icon-grid">
-                <!-- Icons will be populated by JavaScript -->
-            </div>
-            <div class="flex gap-3">
-                <button id="cancel-icon-btn" class="flex-1 px-4 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Cancel</button>
-                <button id="apply-icon-btn" class="flex-1 px-4 py-3 rounded-full bg-sky-600 text-sm font-medium text-white transition-all duration-300 hover:bg-sky-500">Apply</button>
-            </div>
-        </div>
-    </dialog>
-    
-    <!-- Info Modal -->
-    <dialog id="info-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-8 max-w-sm w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
-        <div class="flex flex-col items-center gap-4 text-center">
-            <h2 class="text-xl font-medium text-neutral-300">SmartBed Controller</h2>
-            <p class="text-sm text-neutral-400">Made by Sammy Wammy</p>
-            <button id="close-info-modal-btn" class="mt-4 px-6 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Close</button>
-        </div>
-    </dialog>
-
-    <!-- Notification System -->
-    <div id="notification-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 max-w-xs"></div>
-
-
-  <script>
-        const powerSwitch = document.getElementById('power-switch');
-        const controls = document.getElementById('controls');
-        const flashBtn = document.getElementById('flash-btn');
-        const settingsBtn = document.getElementById('settings-btn');
-        const settingsModal = document.getElementById('settings-modal');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const onTimeSlider = document.getElementById('on-time-slider');
-        const offTimeSlider = document.getElementById('off-time-slider');
-        const onTimeInput = document.getElementById('on-time-input');
-        const offTimeInput = document.getElementById('off-time-input');
-        const powerIcon = document.getElementById('power-icon');
-        const infoBtn = document.getElementById('info-btn');
-        const infoModal = document.getElementById('info-modal');
-        const closeInfoModalBtn = document.getElementById('close-info-modal-btn');
-        const connectionStatus = document.getElementById('connection-status');
-        const statusLed = document.getElementById('status-led');
-        const statusPulse = document.getElementById('status-pulse');
-        const statusText = document.getElementById('status-text');
-        const deviceModal = document.getElementById('device-modal');
-        const closeDeviceModalBtn = document.getElementById('close-device-modal-btn');
-        const deviceItem = document.getElementById('device-item');
-        const deviceIcon = document.getElementById('device-icon');
-        const deviceName = document.getElementById('device-name');
-        const deviceStatus = document.getElementById('device-status');
-        const disconnectBtn = document.getElementById('disconnect-btn');
-        const connectModal = document.getElementById('connect-modal');
-        const connectingContent = document.getElementById('connecting-content');
-        const connectingTitle = document.getElementById('connecting-title');
-        const errorContent = document.getElementById('error-content');
-        const closeConnectModalBtn = document.getElementById('close-connect-modal-btn');
-        const connectingDeviceName = document.getElementById('connecting-device-name');
-        const errorDeviceName = document.getElementById('error-device-name');
-        const editNameModal = document.getElementById('edit-name-modal');
-        const nameInput = document.getElementById('name-input');
-        const cancelNameBtn = document.getElementById('cancel-name-btn');
-        const saveNameBtn = document.getElementById('save-name-btn');
-        const editIcon = document.getElementById('edit-icon');
-        const iconModal = document.getElementById('icon-modal');
-        const iconGrid = document.getElementById('icon-grid');
-        const cancelIconBtn = document.getElementById('cancel-icon-btn');
-        const applyIconBtn = document.getElementById('apply-icon-btn');
-        const notificationContainer = document.getElementById('notification-container');
+        @media (max-width: 750px) {
+            #notification-container {
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                align-items: center;
+                transition: bottom 0.3s ease;
+            }
+            
+            #notification-container {
+                bottom: 24px;
+            }
+            
+            /* When controls are visible, move above flash button */
+            .controls.opacity-100 ~ #notification-container,
+            body:has(.controls.opacity-100) #notification-container {
+                bottom: 120px; /* Adjust this value to change height of notification */
+            }
+            
+            .notification {
+                transform: translateY(50px);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
+            }
+            
+            .notification.hide {
+                transform: translateY(50px);
+            }
+        }
         
-        const controlsActiveClasses = ['opacity-100', 'pointer-events-auto'];
-        const powerIconActiveClasses = ['stroke-sky-500', 'drop-shadow-[0_0_10px_rgba(14,165,233,0.5)]'];
-
-        //-------------------------------------------------------------------------------------------------------------------
-        // UPDATED ACTION HANDLER WITH CONNECTION STATE CHECKING -----------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------------
-        const ActionHandler = {
-    powerOn: () => {
-        if (!isReallyConnected) {
-            console.log('Cannot send power on - device not connected');
-            return;
-        }
-        fetch(`/set?power=on`).catch(console.error);
-    },
-    powerOff: () => {
-        if (!isReallyConnected) {
-            console.log('Cannot send power off - device not connected');
-            return;
-        }
-        fetch(`/set?power=off`).catch(console.error);
-    },
-    flashOn: () => {
-        if (!isReallyConnected) {
-            console.log('Cannot send flash on - device not connected');
-            return;
-        }
-        fetch(`/set?flash=on`).catch(console.error);
-    },
-    flashOff: () => {
-        if (!isReallyConnected) {
-            console.log('Cannot send flash off - device not connected');
-            return;
-        }
-        fetch(`/set?flash=off`).catch(console.error);
-    },
-    flashSettingsSaved: (onTime, offTime) => {
-        if (!isReallyConnected) {
-            console.log('Cannot send flash settings - device not connected');
-            return;
-        }
-        fetch(`/set?onTime=${onTime}&offTime=${offTime}`).catch(console.error);
-    },
-    connected: (deviceName) => { 
-        fetch(`/connect`).then(() => {
-            console.log(`Connected to ${deviceName}`);
-        }).catch(console.error);
-    },
-    disconnected: (deviceName) => { 
-        fetch(`/disconnect`).then(() => {
-            console.log(`Disconnected from ${deviceName}`);
-        }).catch(console.error);
-    }
-};
-
-        // Device icon saver
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedIcon = localStorage.getItem('deviceIcon');
-            if (savedIcon !== null) {
-                currentDeviceIcon = parseInt(savedIcon, 10); // as number
-                updateDeviceIcon();
+        /* Desktop positioning */
+        @media (min-width: 751px) {
+            #notification-container {
+                bottom: 24px;
+                right: 24px;
+                display: flex;
             }
-        });
+            
+        }
+            </style>
+        </head>
+        <body class="bg-[#0d0d0d] text-neutral-400 font-inter">
 
-        // Device name saver
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('deviceName');
-            if (savedName) {
-                currentDeviceName = savedName;
-                updateDeviceName();
+            <header class="absolute top-0 left-0 right-0 p-8 flex justify-center items-center">
+                <div class="absolute left-8 flex items-center gap-2">
+                  <svg class="w-12 h-12 text-neutral-500 transition-colors" 
+                       xmlns="http://www.w3.org/2000/svg" fill="none" 
+                       viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path d="M7 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M22 17v-3h-20" />
+                    <path d="M2 8v9" />
+                    <path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5z" />
+                  </svg>
+                </div>
+        
+        
+                </svg>
+                <span class="text-neutral-500 text-lg font-medium">SmartBed</span>
+                <!-- Info button -->
+                <button id="info-btn" class="absolute right-8 p-2 rounded-full text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 transition-colors">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </button>
+            </header>
+        
+            <!-- Connection Status Indicator -->
+            <div class="absolute top-20 left-1/2 transform -translate-x-1/2 mt-4">
+                <div id="connection-status" class="flex items-center gap-3 px-6 py-3 bg-neutral-900/80 backdrop-blur-sm border border-neutral-700 rounded-full transition-all duration-300 hover:bg-neutral-800/90 hover:border-neutral-600 hover:scale-105 active:scale-95 cursor-pointer group">
+                    <div class="relative">
+                        <div id="status-led" class="w-3 h-3 rounded-full bg-red-500 transition-all duration-300 group-hover:shadow-lg"></div>
+                        <div id="status-pulse" class="absolute inset-0 w-3 h-3 rounded-full bg-red-500 opacity-75 animate-ping"></div>
+                    </div>
+                    <span id="status-text" class="text-sm font-medium text-neutral-300 transition-colors duration-300 group-hover:text-neutral-200">No device connected</span>
+                </div>
+            </div>
+        
+            <!-- Main Content Container for the power button -->
+            <div class="flex flex-col items-center justify-center w-full my-auto gap-y-12">
+                <!-- Main Power Control -->
+                <label class="relative cursor-pointer transition-all duration-300 transform-gpu hover:scale-105 active:scale-95">
+                    <input type="checkbox" id="power-switch">
+                    <svg id="power-icon" class="w-28 h-28 stroke-neutral-500 stroke-2 transition-all duration-300 ease-in-out drop-shadow-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/>
+                    </svg>
+                </label>
+            </div>
+        
+            <!-- Controls Section now fixed at the bottom center of the page -->
+            <div class="fixed bottom-0 left-0 right-0 p-8 flex justify-center items-center z-10">
+                <div id="controls" class="controls w-full max-w-sm flex justify-center items-center opacity-0 pointer-events-none">
+                    <button id="flash-btn" class="flash-btn px-6 py-3 rounded-full border border-neutral-600 text-sm font-medium tracking-wide transition-all duration-300">Flash</button>
+                    <button id="settings-btn" class="settings-btn text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800 p-2 rounded-full">
+                        <svg class="w-5 h-5 stroke-current stroke-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Settings Modal -->
+            <dialog id="settings-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-8 max-w-lg w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
+                <div class="flex flex-col gap-8">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-neutral-300">On Duration</span>
+                            <div class="flex items-center gap-2 text-xs font-normal text-neutral-500">
+                                <input type="number" class="w-16 text-center text-xs bg-neutral-800 border border-neutral-700 text-neutral-300 py-1 px-2 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" id="on-time-input" min="50" max="10000" value="500">
+                                <span>ms</span>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <input type="range" class="w-full h-1 bg-neutral-700 rounded-full outline-none cursor-pointer transition-all duration-500" id="on-time-slider" min="50" max="10000" value="500">
+                        </div>
+                    </div>
+        
+                    <div class="flex flex-col gap-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-neutral-300">Off Duration</span>
+                            <div class="flex items-center gap-2 text-xs font-normal text-neutral-500">
+                                <input type="number" class="w-16 text-center text-xs bg-neutral-800 border border-neutral-700 text-neutral-300 py-1 px-2 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" id="off-time-input" min="50" max="10000" value="500">
+                                <span>ms</span>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <input type="range" class="w-full h-1 bg-neutral-700 rounded-full outline-none cursor-pointer transition-all duration-500" id="off-time-slider" min="50" max="10000" value="500">
+                        </div>
+                    </div>
+        
+                    <button id="close-modal-btn" class="mt-4 px-6 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Apply</button>
+                </div>
+            </dialog>
+        
+            <!-- Device Selection Modal -->
+            <dialog id="device-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-6 max-w-md w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-lg font-medium text-neutral-300 text-center">Devices</h3>
+                    <div class="flex flex-col gap-3">
+                        <div id="device-item" class="device-item flex items-center gap-4 p-4 rounded-xl border border-neutral-700 cursor-pointer">
+                            <!-- Device Icon -->
+                            <div class="flex-shrink-0">
+                                <svg id="device-icon" class="device-icon w-8 h-8 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                                </svg>
+                            </div>
+                            <!-- Device Info -->
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span id="device-name" class="text-neutral-300 font-medium">SmartBed Pro</span>
+                                    <svg id="edit-icon" class="w-4 h-4 text-neutral-500 opacity-1 hover:text-sky-400 transition-all cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                    </svg>
+                                </div>
+                                <div class="text-left">
+                                    <span id="device-status" class="text-xs text-sky-400">Ready to connect</span>
+                                </div>
+                            </div>
+                            <!-- Disconnect Button -->
+                            <div class="flex-shrink-0">
+                                <button id="disconnect-btn" class="hidden p-2 rounded-full text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all">
+                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="close-device-modal-btn" class="px-6 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Close</button>
+                </div>
+            </dialog>
+        
+            <!-- Connection Modal -->
+            <dialog id="connect-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-8 max-w-sm w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
+                <div id="connecting-content" class="flex flex-col items-center gap-6 text-center">
+                    <div class="loading-spinner"></div>
+                    <div class="flex flex-col gap-2">
+                        <h3 id="connecting-title" class="text-lg font-medium text-neutral-300">Connecting</h3>
+                        <p class="text-sm text-neutral-400">Establishing connection to <span id="connecting-device-name">SmartBed Pro</span></p>
+                    </div>
+                </div>
+                <div id="error-content" class="flex flex-col items-center gap-6 text-center hidden">
+                    <svg class="w-12 h-12 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-lg font-medium text-red-400">Connection Failed!</h3>
+                        <p class="text-sm text-neutral-400">Make sure your device and <span id="error-device-name">SmartBed Pro</span> are connected to the same WLAN.</p>
+                    </div>
+                    <button id="close-connect-modal-btn" class="px-6 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Close</button>
+                </div>
+            </dialog>
+        
+            <!-- Device Name Edit Modal -->
+            <dialog id="edit-name-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-6 max-w-sm w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
+                <div class="flex flex-col gap-6">
+                    <div class="relative w-full">
+                        <input type="text" id="name-input" class="w-full bg-neutral-800 border border-neutral-700 text-neutral-300 py-3 px-4 pr-12 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" placeholder="Enter device name" maxlength="20">
+                       <span id="name-char-count" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-neutral-500 pointer-events-none">0/20</span>
+                    </div>
+                   <div class="flex gap-3">
+                        <button id="cancel-name-btn" class="flex-1 px-4 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Cancel</button>
+                        <button id="save-name-btn" class="flex-1 px-4 py-3 rounded-full bg-sky-600 text-sm font-medium text-white transition-all duration-300 hover:bg-sky-500">Save</button>
+                    </div>
+                </div>
+            </dialog>
+        
+            <!-- Icon Selection Modal -->
+            <dialog id="icon-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-6 max-w-md w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-lg font-medium text-neutral-300 text-center">Choose Device Icon</h3>
+                    <div class="grid grid-cols-4 gap-3" id="icon-grid">
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="cancel-icon-btn" class="flex-1 px-4 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Cancel</button>
+                        <button id="apply-icon-btn" class="flex-1 px-4 py-3 rounded-full bg-sky-600 text-sm font-medium text-white transition-all duration-300 hover:bg-sky-500">Apply</button>
+                    </div>
+                </div>
+            </dialog>
+            
+            <!-- Info Modal -->
+            <dialog id="info-modal" class="modal bg-neutral-900 border border-neutral-800 rounded-2xl p-8 max-w-sm w-11/12 backdrop:bg-neutral-950/70 backdrop:backdrop-blur-sm shadow-2xl">
+                <div class="flex flex-col items-center gap-4 text-center">
+                    <h2 class="text-xl font-medium text-neutral-300">SmartBed Controller</h2>
+                    <p class="text-sm text-neutral-400">Made by Sammy Wammy</p>
+                    <button id="close-info-modal-btn" class="mt-4 px-6 py-3 rounded-full bg-neutral-800 text-sm font-medium text-neutral-300 transition-all duration-300 hover:bg-neutral-700">Close</button>
+                </div>
+            </dialog>
+
+            <div id="notification-container"></div>
+        
+
+          <script>
+                const powerSwitch = document.getElementById('power-switch');
+                const controls = document.getElementById('controls');
+                const flashBtn = document.getElementById('flash-btn');
+                const settingsBtn = document.getElementById('settings-btn');
+                const settingsModal = document.getElementById('settings-modal');
+                const closeModalBtn = document.getElementById('close-modal-btn');
+                const onTimeSlider = document.getElementById('on-time-slider');
+                const offTimeSlider = document.getElementById('off-time-slider');
+                const onTimeInput = document.getElementById('on-time-input');
+                const offTimeInput = document.getElementById('off-time-input');
+                const powerIcon = document.getElementById('power-icon');
+                const infoBtn = document.getElementById('info-btn');
+                const infoModal = document.getElementById('info-modal');
+                const closeInfoModalBtn = document.getElementById('close-info-modal-btn');
+                const connectionStatus = document.getElementById('connection-status');
+                const statusLed = document.getElementById('status-led');
+                const statusPulse = document.getElementById('status-pulse');
+                const statusText = document.getElementById('status-text');
+                const deviceModal = document.getElementById('device-modal');
+                const closeDeviceModalBtn = document.getElementById('close-device-modal-btn');
+                const deviceItem = document.getElementById('device-item');
+                const deviceIcon = document.getElementById('device-icon');
+                const deviceName = document.getElementById('device-name');
+                const deviceStatus = document.getElementById('device-status');
+                const disconnectBtn = document.getElementById('disconnect-btn');
+                const connectModal = document.getElementById('connect-modal');
+                const connectingContent = document.getElementById('connecting-content');
+                const connectingTitle = document.getElementById('connecting-title');
+                const errorContent = document.getElementById('error-content');
+                const closeConnectModalBtn = document.getElementById('close-connect-modal-btn');
+                const connectingDeviceName = document.getElementById('connecting-device-name');
+                const errorDeviceName = document.getElementById('error-device-name');
+                const editNameModal = document.getElementById('edit-name-modal');
+                const nameInput = document.getElementById('name-input');
+                const cancelNameBtn = document.getElementById('cancel-name-btn');
+                const saveNameBtn = document.getElementById('save-name-btn');
+                const editIcon = document.getElementById('edit-icon');
+                const iconModal = document.getElementById('icon-modal');
+                const iconGrid = document.getElementById('icon-grid');
+                const cancelIconBtn = document.getElementById('cancel-icon-btn');
+                const applyIconBtn = document.getElementById('apply-icon-btn');
+                const notificationContainer = document.getElementById('notification-container');
+                
+                const controlsActiveClasses = ['opacity-100', 'pointer-events-auto'];
+                const powerIconActiveClasses = ['stroke-sky-500', 'drop-shadow-[0_0_10px_rgba(14,165,233,0.5)]'];
+        
+                //-------------------------------------------------------------------------------------------------------------------
+                // UPDATED ACTION HANDLER WITH CONNECTION STATE CHECKING -----------------------------------------------------------
+                //-------------------------------------------------------------------------------------------------------------------
+                const ActionHandler = {
+            powerOn: () => {
+                if (!isReallyConnected) {
+                    console.log('Cannot send power on - device not connected');
+                    return;
+                }
+                fetch(`/set?power=on`).catch(console.error);
+            },
+            powerOff: () => {
+                if (!isReallyConnected) {
+                    console.log('Cannot send power off - device not connected');
+                    return;
+                }
+                fetch(`/set?power=off`).catch(console.error);
+            },
+            flashOn: () => {
+                if (!isReallyConnected) {
+                    console.log('Cannot send flash on - device not connected');
+                    return;
+                }
+                fetch(`/set?flash=on`).catch(console.error);
+            },
+            flashOff: () => {
+                if (!isReallyConnected) {
+                    console.log('Cannot send flash off - device not connected');
+                    return;
+                }
+                fetch(`/set?flash=off`).catch(console.error);
+            },
+            flashSettingsSaved: (onTime, offTime) => {
+                if (!isReallyConnected) {
+                    console.log('Cannot send flash settings - device not connected');
+                    return;
+                }
+                fetch(`/set?onTime=${onTime}&offTime=${offTime}`).catch(console.error);
+            },
+            connected: (deviceName) => { 
+                fetch(`/connect`).then(() => {
+                    console.log(`Connected to ${deviceName}`);
+                }).catch(console.error);
+            },
+            disconnected: (deviceName) => { 
+                fetch(`/disconnect`).then(() => {
+                    console.log(`Disconnected from ${deviceName}`);
+                }).catch(console.error);
             }
-        });
+        };
+        
+                // Icon saver
+                document.addEventListener('DOMContentLoaded', () => {
+                    const savedIcon = localStorage.getItem('deviceIcon');
+                    if (savedIcon !== null) {
+                        currentDeviceIcon = parseInt(savedIcon, 10); // as number
+                        updateDeviceIcon();
+                    }
+                });
+        
+                // Name saver
+                document.addEventListener('DOMContentLoaded', () => {
+                    const savedName = localStorage.getItem('deviceName');
+                    if (savedName) {
+                        currentDeviceName = savedName;
+                        updateDeviceName();
+                    }
+                });
+        
+        
+                let isPowerOn = false;
+                let isFlashing = false;
+                let isConnected = false;
+                let isReallyConnected = localStorage.getItem('isConnected') === 'true' || false;
+                let hasLoadedOnce = false;
+                let currentDeviceName = 'SmartBed';
+                let currentDeviceIcon = 2;
+                let selectedIconIndex = 0;
+                let connectingDotsInterval = null;
+                let tooltip = null;
+                let currentModal = null;
+                const snapValues = [50, 100, 200, 300, 400, 500, 750, 1000, 1500, 2000, 2500, 5000, 7500, 10000];
+                const SNAP_THRESHOLD = 10;
+                const MAX_NAME_LENGTH = 20;
+        
+        // Device icons
+        const deviceIcons = [
+            // Bolt / Lightning
+            `<path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />`,
+            // Cube
+            `<path d="M2 7L12 2l10 5-10 5-10-5zm0 0v10l10 5V12zm20 0v10l-10 5V12z" />`,
+            // 32
+            `<path d="M14 8h3a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 0 -1 1v2a1 1 0 0 0 1 1h3M6 8h2.5a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1 -1.5 1.5h-1.5h1.5a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1 -1.5 1.5h-2.5" />`,
+            // Smart Home
+            `<path d="M19 8.71l-5.333 -4.148a2.666 2.666 0 0 0 -3.274 0l-5.334 4.148a2.665 2.665 0 0 0 -1.029 2.105v7.2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-7.2c0 -.823 -.38 -1.6 -1.03 -2.105M16 15c-2.21 1.333 -5.792 1.333 -8 0" />`,
+        ];
+        
+        function createNotification(type, title, duration = 4000) {
+            let notification = notificationContainer.querySelector('.notification');
+            let isExisting = false;
+            
+            if (notification) {
+                if (notification._autoRemoveTimer) {
+                    clearTimeout(notification._autoRemoveTimer);
+                }
+                isExisting = true;
+            } else {
+                notification = document.createElement('div');
+                notificationContainer.appendChild(notification);
+            }
 
-
-        let isPowerOn = false;
-        let isFlashing = false;
-        let isConnected = false;
-        let isReallyConnected = false;  // NEW: Track actual connection state
-        let hasLoadedOnce = false;
-        let currentDeviceName = 'SmartBed';
-        let currentDeviceIcon = 2;
-        let selectedIconIndex = 0;
-        let connectingDotsInterval = null;
-        let tooltip = null;
-        let currentModal = null;
-        const snapValues = [50, 100, 200, 300, 400, 500, 750, 1000, 1500, 2000, 2500, 5000, 7500, 10000];
-        const SNAP_THRESHOLD = 10;
-        const MAX_NAME_LENGTH = 20;
-
-        // Available device icons
-const deviceIcons = [
-    // Bolt / Lightning
-    `<path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />`,
-    // WiFi
-    `<path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20l0.01 0" />`,
-    // "32"
-    `<path d="M14 8h3a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 0 -1 1v2a1 1 0 0 0 1 1h3M6 8h2.5a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1 -1.5 1.5h-1.5h1.5a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1 -1.5 1.5h-2.5" />`,
-    // Smart Home
-    `<path d="M19 8.71l-5.333 -4.148a2.666 2.666 0 0 0 -3.274 0l-5.334 4.148a2.665 2.665 0 0 0 -1.029 2.105v7.2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-7.2c0 -.823 -.38 -1.6 -1.03 -2.105M16 15c-2.21 1.333 -5.792 1.333 -8 0" />`,
-];
-
-        // Notification system
-        function createNotification(type, title, message, duration = 4000) {
-            const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             
             const iconMap = {
@@ -741,534 +758,537 @@ const deviceIcons = [
                 warning: `<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>`,
                 error: `<path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>`
             };
-
-            notification.innerHTML = `
-                <div class="flex items-start gap-3">
-                    <svg class="notification-icon mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        ${iconMap[type]}
-                    </svg>
-                    <div class="flex-1 min-w-0">
-                        <div class="text-sm font-medium text-neutral-200">${title}</div>
-                        <div class="text-xs text-neutral-400 mt-1">${message}</div>
-                    </div>
-                    <button class="close-notification text-neutral-500 hover:text-neutral-300 transition-colors ml-2">
-                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
+        
+        notification.innerHTML = `
+            <div class="flex items-center gap-3">
+                <svg class="notification-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    ${iconMap[type]}
+                </svg>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium text-neutral-200">${title}</div>
                 </div>
-            `;
-
-            // Add close functionality
+                <button class="close-notification text-neutral-500 hover:text-neutral-300 transition-colors ml-2">
+                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        `;
+        
             const closeBtn = notification.querySelector('.close-notification');
             closeBtn.addEventListener('click', () => removeNotification(notification));
+            if (!isExisting) {
+                setTimeout(() => notification.classList.add('show'), 100);
+            } else {
+                notification.classList.add('show');
+            }
 
-            notificationContainer.appendChild(notification);
-
-            // Show notification
-            setTimeout(() => notification.classList.add('show'), 100);
-
-            // Auto remove after duration
             const autoRemoveTimer = setTimeout(() => removeNotification(notification), duration);
-
-            // Store timer on notification for cleanup
             notification._autoRemoveTimer = autoRemoveTimer;
-
+        
             return notification;
         }
-
         
-
-        function removeNotification(notification) {
-            if (notification._autoRemoveTimer) {
-                clearTimeout(notification._autoRemoveTimer);
-            }
-            
-            notification.classList.add('hide');
-            setTimeout(() => {
-                if (notificationContainer.contains(notification)) {
-                    notificationContainer.removeChild(notification);
-                }
-            }, 400);
-        }
-
-        function vibrate() {
-            if ('vibrate' in navigator) {
-                navigator.vibrate(20);
-            }
-        }
-
-        function toggleSettingsButton(show) {
-            if (show) {
-                settingsBtn.classList.add('show');
-            } else {
-                settingsBtn.classList.remove('show');
-            }
-        }
-
-function updateConnectionStatus(connected) {
-    isConnected = connected;
-    isReallyConnected = connected;  // NEW: Update real connection state
-
-    if (connected) {
-        // LED green
-        statusLed.className = 'w-3 h-3 rounded-full bg-green-500 transition-all duration-300 group-hover:shadow-lg';
-        statusPulse.className = 'absolute inset-0 w-3 h-3 rounded-full bg-green-500 opacity-75 animate-ping';
-        // Status text
-        statusText.textContent = `Connected to ${currentDeviceName}`;
-        // Device modal text
-        deviceStatus.textContent = 'Connected';
-        deviceStatus.className = 'text-xs text-green-400';
-        // Show disconnect button
-        disconnectBtn.classList.remove('hidden');
-        // Notification
-        createNotification('success', 'Connected Successfully!', `Now connected to ${currentDeviceName}`);
-
-    } else {
-        // LED red
-        statusLed.className = 'w-3 h-3 rounded-full bg-red-500 transition-all duration-300 group-hover:shadow-lg';
-        statusPulse.className = 'absolute inset-0 w-3 h-3 rounded-full bg-red-500 opacity-75 animate-ping';
-        // Status text
-        statusText.textContent = 'No device connected';
-        // Device modal text
-        deviceStatus.textContent = 'Ready to connect';
-        deviceStatus.className = 'text-xs text-sky-400';
-        // Hide disconnect button
-        disconnectBtn.classList.add('hidden');
-        // Reset power states when disconnecting
-        isPowerOn = false;
-        isFlashing = false;
-        powerSwitch.checked = false;
-        updateUI();
-        // Notification
-        if (hasLoadedOnce) {
-            if (isPowerOn || isFlashing) {
-                createNotification('warning', 'Device Disconnected', 'Device has been disconnected from the network');
-            } else {
-                createNotification('info', 'Disconnected', `Disconnected from ${currentDeviceName}`);
-            }
-        }
-    }
-
-    hasLoadedOnce = true;
-}
-
-
-        function updateDeviceName() {
-            deviceName.textContent = currentDeviceName;
-            connectingDeviceName.textContent = currentDeviceName;
-            errorDeviceName.textContent = currentDeviceName;
-            if (isConnected) {
-                statusText.textContent = `Connected to ${currentDeviceName}`;
-            }
-        }
-
-        function updateDeviceIcon() {
-            deviceIcon.innerHTML = deviceIcons[currentDeviceIcon];
-        }
-
-        function startConnectingAnimation() {
-            let dotCount = 0;
-            connectingDotsInterval = setInterval(() => {
-                dotCount = (dotCount % 3) + 1;
-                connectingTitle.textContent = 'Connecting' + '.'.repeat(dotCount);
-            }, 500);
-        }
-
-        function stopConnectingAnimation() {
-            if (connectingDotsInterval) {
-                clearInterval(connectingDotsInterval);
-                connectingDotsInterval = null;
-                connectingTitle.textContent = 'Connecting';
-            }
-        }
-
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        if (isMobileDevice()) {
-            document.body.classList.add('no-hover');
-        }
-
-        window.addEventListener("touchmove", e => {
-            e.preventDefault();
-            }, {passive:false});
-
-
-        function showTooltip(element, text) {
-            if (tooltip) {
-                document.body.removeChild(tooltip);
-            }
-            
-            tooltip = document.createElement('div');
-            tooltip.className = 'tooltip';
-            tooltip.innerHTML = `
-                <div class="flex items-center gap-2">
-                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                    </svg>
-                    <span>${text}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(tooltip);
-            
-            const rect = element.getBoundingClientRect();
-            tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
-            tooltip.style.top = `${rect.top - tooltip.offsetHeight - 8}px`;
-            
-            setTimeout(() => tooltip.classList.add('show'), 10);
-        }
-
-        function hideTooltip() {
-            if (tooltip) {
-                tooltip.classList.remove('show');
-                setTimeout(() => {
-                    if (tooltip && document.body.contains(tooltip)) {
-                        document.body.removeChild(tooltip);
-                        tooltip = null;
+                
+        
+                function removeNotification(notification) {
+                    if (notification._autoRemoveTimer) {
+                        clearTimeout(notification._autoRemoveTimer);
                     }
-                }, 200);
-            }
-        }
+                    
+                    notification.classList.add('hide');
+                    setTimeout(() => {
+                        if (notificationContainer.contains(notification)) {
+                            notificationContainer.removeChild(notification);
+                        }
+                    }, 400);
+                }
+        
+                function vibrate() {
+                    if ('vibrate' in navigator) {
+                        navigator.vibrate(20);
+                    }
+                }
+        
+                function toggleSettingsButton(show) {
+                    if (show) {
+                        settingsBtn.classList.add('show');
+                    } else {
+                        settingsBtn.classList.remove('show');
+                    }
+                }
+        
+        function updateConnectionStatus(connected, isReconnect = false) {
+            const wasConnected = isReallyConnected;
+            isConnected = connected;
+            isReallyConnected = connected;
 
-        function populateIconGrid() {
-            iconGrid.innerHTML = '';
-            deviceIcons.forEach((iconPath, index) => {
-                const iconDiv = document.createElement('div');
-                iconDiv.className = `icon-option flex items-center justify-center p-4 rounded-xl border border-neutral-700 transition-all ${index === selectedIconIndex ? 'selected' : ''}`;
-                iconDiv.innerHTML = `
-                    <svg class="w-6 h-6 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        ${iconPath}
-                    </svg>
-                `;
-                iconDiv.addEventListener('click', () => {
-                    document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
-                    iconDiv.classList.add('selected');
-                    selectedIconIndex = index;
+            if (wasConnected !== connected) {
+                localStorage.setItem('isConnected', connected);
+            }
+        
+            if (connected) {
+                // LED green
+                statusLed.className = 'w-3 h-3 rounded-full bg-green-500 transition-all duration-300 group-hover:shadow-lg';
+                statusPulse.className = 'absolute inset-0 w-3 h-3 rounded-full bg-green-500 opacity-75 animate-ping';
+                // Status text
+                statusText.textContent = `Connected to ${currentDeviceName}`;
+                deviceStatus.textContent = 'Connected';
+                deviceStatus.className = 'text-xs text-green-400';
+                disconnectBtn.classList.remove('hidden');
+
+                if (!isReconnect) {
+                    createNotification('success', 'Connected Successfully!');
+                }
+        
+            } else {
+                // LED red
+                statusLed.className = 'w-3 h-3 rounded-full bg-red-500 transition-all duration-300 group-hover:shadow-lg';
+                statusPulse.className = 'absolute inset-0 w-3 h-3 rounded-full bg-red-500 opacity-75 animate-ping';
+                // Status text
+                statusText.textContent = 'No device connected';
+                deviceStatus.textContent = 'Ready to connect';
+                deviceStatus.className = 'text-xs text-sky-400';
+                disconnectBtn.classList.add('hidden');
+                isPowerOn = false;
+                isFlashing = false;
+                powerSwitch.checked = false;
+                updateUI();
+                if (hasLoadedOnce) {
+                    if (isPowerOn || isFlashing) {
+                        createNotification('warning', 'Device Disconnected');
+                    } else {
+                        createNotification('info', 'Disconnected');
+                    }
+                }
+            }
+        
+            hasLoadedOnce = true;
+        }
+        
+        
+                function updateDeviceName() {
+                    deviceName.textContent = currentDeviceName;
+                    connectingDeviceName.textContent = currentDeviceName;
+                    errorDeviceName.textContent = currentDeviceName;
+                    if (isConnected) {
+                        statusText.textContent = `Connected to ${currentDeviceName}`;
+                    }
+                }
+        
+                function updateDeviceIcon() {
+                    deviceIcon.innerHTML = deviceIcons[currentDeviceIcon];
+                }
+        
+                function startConnectingAnimation() {
+                    let dotCount = 0;
+                    connectingDotsInterval = setInterval(() => {
+                        dotCount = (dotCount % 3) + 1;
+                        connectingTitle.textContent = 'Connecting' + '.'.repeat(dotCount);
+                    }, 500);
+                }
+        
+                function stopConnectingAnimation() {
+                    if (connectingDotsInterval) {
+                        clearInterval(connectingDotsInterval);
+                        connectingDotsInterval = null;
+                        connectingTitle.textContent = 'Connecting';
+                    }
+                }
+        
+                function isMobileDevice() {
+                    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                }
+        
+                if (isMobileDevice()) {
+                    document.body.classList.add('no-hover');
+                }
+        
+                window.addEventListener("touchmove", e => {
+                    e.preventDefault();
+                    }, {passive:false});
+        
+        
+                function showTooltip(element, text) {
+                    if (tooltip) {
+                        document.body.removeChild(tooltip);
+                    }
+                    
+                    tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                            </svg>
+                            <span>${text}</span>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(tooltip);
+                    
+                    const rect = element.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
+                    tooltip.style.top = `${rect.top - tooltip.offsetHeight - 8}px`;
+                    
+                    setTimeout(() => tooltip.classList.add('show'), 10);
+                }
+        
+                function hideTooltip() {
+                    if (tooltip) {
+                        tooltip.classList.remove('show');
+                        setTimeout(() => {
+                            if (tooltip && document.body.contains(tooltip)) {
+                                document.body.removeChild(tooltip);
+                                tooltip = null;
+                            }
+                        }, 200);
+                    }
+                }
+        
+                function populateIconGrid() {
+                    iconGrid.innerHTML = '';
+                    deviceIcons.forEach((iconPath, index) => {
+                        const iconDiv = document.createElement('div');
+                        iconDiv.className = `icon-option flex items-center justify-center p-4 rounded-xl border border-neutral-700 transition-all ${index === selectedIconIndex ? 'selected' : ''}`;
+                        iconDiv.innerHTML = `
+                            <svg class="w-6 h-6 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                ${iconPath}
+                            </svg>
+                        `;
+                        iconDiv.addEventListener('click', () => {
+                            document.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
+                            iconDiv.classList.add('selected');
+                            selectedIconIndex = index;
+                            vibrate();
+                        });
+                        iconGrid.appendChild(iconDiv);
+                    });
+                }
+        
+                function attemptConnection() {
+                    closeModal(currentModal);
+                    openModal(connectModal);
+                    connectingContent.classList.remove('hidden');
+                    errorContent.classList.add('hidden');
+                    startConnectingAnimation();
+                    createNotification('info', 'Connecting...', 2000);
+
+                    const delay = Math.random() * 1000 + 500; // 0.5-1.5 seconds of connecting time
+                    
+                    setTimeout(() => {
+                        stopConnectingAnimation();
+                        updateConnectionStatus(true, isReallyConnected);
+                        ActionHandler.connected(currentDeviceName);
+                        updateDeviceName();
+                        closeModal(connectModal);
+                    }, delay);
+                }
+                function updateNotificationPosition() {
+                const isControlsVisible = controls.classList.contains('opacity-100');
+                const container = document.getElementById('notification-container');
+            
+                if (window.innerWidth <= 750) { // Mobile
+                    if (isControlsVisible) {
+                    container.style.bottom = '120px'; // Above flash button
+                } else {
+                    container.style.bottom = '24px'; // Bottom of screen
+                }
+                } else {
+                    container.style.bottom = '';
+                }
+            }
+        
+        function updateUI() {
+            if (isPowerOn && isReallyConnected) {
+                controls.classList.add(...controlsActiveClasses);
+                powerIcon.classList.add(...powerIconActiveClasses);
+                powerIcon.classList.add('power-on-svg');
+            } else {
+                controls.classList.remove(...controlsActiveClasses);
+                powerIcon.classList.remove(...powerIconActiveClasses);
+                powerIcon.classList.remove('power-on-svg'); // Remove glow
+                isFlashing = false;
+            }
+        
+            updateNotificationPosition();
+        
+            if (isFlashing && isReallyConnected) flashBtn.classList.add('flash-on'); else flashBtn.classList.remove('flash-on');
+            toggleSettingsButton(isFlashing && isReallyConnected);
+        }
+        
+            window.addEventListener('resize', updateNotificationPosition);
+        
+                function getLogValue(linear, min, max) {
+                    const logMin = Math.log(min);
+                    const logMax = Math.log(max);
+                    const scale = (logMax - logMin) / (max - min);
+                    return Math.exp(logMin + (linear - min) * scale);
+                }
+        
+                function getLinearValue(log, min, max) {
+                    const logMin = Math.log(min);
+                    const logMax = Math.log(max);
+                    const scale = (logMax - logMin) / (max - min);
+                    return ((Math.log(log) - logMin) / scale) + min;
+                }
+        
+                function snapToNearestValue(value) {
+                    return snapValues.reduce((prev, curr) =>
+                        Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+                    );
+                }
+        
+                function updateSlider(slider, input) {
+                    const min = parseFloat(slider.min);
+                    const max = parseFloat(slider.max);
+                    const linear = parseFloat(slider.value);
+                    
+                    let logValue = Math.round(getLogValue(linear, min, max));
+                    const snapValue = snapToNearestValue(logValue);
+                    
+                    if (Math.abs(logValue - snapValue) <= SNAP_THRESHOLD) {
+                        logValue = snapValue;
+                        slider.value = getLinearValue(logValue, min, max);
+                    }
+                    
+                    input.value = logValue;
+                    
+                    const percent = (slider.value - min) / (max - min) * 100;
+                    slider.style.background = `linear-gradient(to right, #0ea5e9 0%, #0ea5e9 ${percent}%, #888 ${percent}%, #888 100%)`;
+                }
+        
+                function setupSlider(slider, input) {
+                    let lastValue = input.value;
+                    
+                    slider.addEventListener('input', () => {
+                        updateSlider(slider, input);
+                        if (input.value !== lastValue) {
+                            lastValue = input.value;
+        
+                        }
+                    });
+                    
+                    input.addEventListener('input', () => {
+                        const value = Math.max(50, Math.min(10000, parseInt(input.value) || 50));
+                        input.value = value;
+                        slider.value = getLinearValue(value, 50, 10000);
+                        updateSlider(slider, input);
+                        if (value !== lastValue) {
+                            lastValue = value;
+        
+                        }
+                    });
+                    updateSlider(slider, input);
+                }
+        
+                function openModal(modal) {
+                    // Close current modal if one is open
+                    if (currentModal && currentModal !== modal) {
+                        closeModal(currentModal);
+                    }
+                    currentModal = modal;
+                    modal.showModal();
+                    setTimeout(() => {
+                        modal.classList.add('is-open');
+                        modal.classList.remove('is-closing');
+                    }, 10);
+                }
+        
+                function openIconModal() {
+                    openModal(iconModal);
+        
+                    // Clear old selections
+                    document.querySelectorAll('.icon-option').forEach((opt, idx) => {
+                        opt.classList.toggle('selected', idx === currentDeviceIcon);
+                    });
+                }
+        
+        
+                function closeModal(modal) {
+                    if (modal === currentModal) {
+                        currentModal = null;
+                    }
+                    modal.classList.add('is-closing');
+                    modal.classList.remove('is-open');
+                    modal.addEventListener('transitionend', () => {
+                        modal.close();
+                        modal.classList.remove('is-closing');
+                    }, { once: true });
+                }
+
+                powerSwitch.addEventListener('change', () => {
+                    if (!isReallyConnected) {
+                        powerSwitch.checked = false;  // Reset
+                        createNotification('warning', 'Not Connected');
+                        return;
+                    }
+                    isPowerOn = powerSwitch.checked;
                     vibrate();
+                    updateUI();
+                    if (powerSwitch.checked) ActionHandler.powerOn();
+                    else ActionHandler.powerOff();
                 });
-                iconGrid.appendChild(iconDiv);
-            });
-        }
 
-        function attemptConnection() {
-            closeModal(currentModal);
-            openModal(connectModal);
-            connectingContent.classList.remove('hidden');
-            errorContent.classList.add('hidden');
-            startConnectingAnimation();
-            createNotification('info', 'Connecting...', `Attempting to connect to ${currentDeviceName}`, 2000);
+                flashBtn.addEventListener('click', () => {
+                    if (!isPowerOn || !isReallyConnected) return;
+                    vibrate();
+                    isFlashing = !isFlashing;
+                    updateUI();
+                    if (isFlashing) {
+                        ActionHandler.flashOn();
+                    } else {
+                        ActionHandler.flashOff();
+                    }
+                });
 
-            
-            // UPDATED: Always succeed connection attempt - remove random failure
-            const delay = Math.random() * 1000 + 500; // 0.5-1.5 seconds
+                settingsBtn.addEventListener('click', () => {
+                    if (!isReallyConnected) return;
+                    vibrate();
+                    openModal(settingsModal);
+                });
+        
+                closeModalBtn.addEventListener('click', () => {
+                    vibrate();
+                    closeModal(settingsModal);
+                    if (isReallyConnected) {
+                        const onTime = parseInt(onTimeInput.value, 10);
+                        const offTime = parseInt(offTimeInput.value, 10);
+                        ActionHandler.flashSettingsSaved(onTime, offTime);
+                    }
+                });
 
-            setTimeout(() => {
-                stopConnectingAnimation();
-                updateConnectionStatus(true);
-                ActionHandler.connected(currentDeviceName);
+                infoBtn.addEventListener('click', () => {
+                    vibrate();
+                    openModal(infoModal);
+                });
+        
+                closeInfoModalBtn.addEventListener('click', () => {
+                    vibrate();
+                    closeModal(infoModal);
+                });
+
+                connectionStatus.addEventListener('click', () => {
+                    vibrate();
+                    openModal(deviceModal);
+                });
+
+                closeDeviceModalBtn.addEventListener('click', () => {
+                    vibrate();
+                    closeModal(deviceModal);
+                });
+
+                deviceItem.addEventListener('click', (e) => {
+                    if (e.target === deviceIcon || e.target === editIcon || e.target === disconnectBtn || e.target.closest('#disconnect-btn') || e.target.closest('#edit-icon')) {
+                        return;
+                    }
+                    if (!isConnected) {
+                        vibrate();
+                        attemptConnection();
+                    }
+                });
+
+                disconnectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    vibrate();
+                    updateConnectionStatus(false);
+                    ActionHandler.disconnected(currentDeviceName);
+                });
+
+                deviceIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    vibrate();
+                    selectedIconIndex = currentDeviceIcon;
+                    populateIconGrid();
+                    openModal(iconModal);
+                });
+        
+                editIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    vibrate();
+                    hideTooltip();
+                    nameInput.value = currentDeviceName;
+                    openModal(editNameModal);
+                });
+
+                cancelNameBtn.addEventListener('click', () => {
+                    vibrate();
+                    closeModal(editNameModal);
+                    openModal(deviceModal);
+                });
+        
+                saveNameBtn.addEventListener('click', () => {
+                    vibrate();
+                    const newName = nameInput.value.trim();
+                    if (newName && newName !== currentDeviceName) {
+                        const oldName = currentDeviceName;
+                        currentDeviceName = newName;
+                        localStorage.setItem('deviceName', currentDeviceName);
+                        updateDeviceName();
+                        createNotification('success', 'Name Updated');
+                    } else if (newName === currentDeviceName) {
+                        createNotification('info', 'No Changes');
+                    } else {
+                        createNotification('warning', 'Invalid Name');
+                        return;
+                    }
+                    closeModal(editNameModal);
+                    openModal(deviceModal);
+                });
+
+                cancelIconBtn.addEventListener('click', () => {
+                    vibrate();
+                    closeModal(iconModal);
+                    openModal(deviceModal);
+                });
+        
+                       const nameCharCount = document.getElementById('name-char-count');
+        
+                        nameInput.addEventListener('input', () => {
+                    if (nameInput.value.length > MAX_NAME_LENGTH) {
+                        nameInput.value = nameInput.value.slice(0, MAX_NAME_LENGTH);
+                    }
+                    nameCharCount.textContent = `${nameInput.value.length}/${MAX_NAME_LENGTH}`;
+                });
+        
+        
+                applyIconBtn.addEventListener('click', () => {
+                    vibrate();
+                    if (selectedIconIndex !== currentDeviceIcon) {
+                        currentDeviceIcon = selectedIconIndex;
+                        localStorage.setItem('deviceIcon', currentDeviceIcon);
+                        updateDeviceIcon();
+                        createNotification('success', 'Icon Updated');
+                    } else {
+                        createNotification('info', 'No Changes');
+                    }
+                    closeModal(iconModal);
+                        openModal(deviceModal);
+                });
+
+                closeConnectModalBtn.addEventListener('click', () => {
+                    vibrate();
+                    stopConnectingAnimation();
+                    closeModal(connectModal);
+                });
+
+                setupSlider(onTimeSlider, onTimeInput);
+                setupSlider(offTimeSlider, offTimeInput);
+
                 updateDeviceName();
-                closeModal(connectModal);
-            }, delay);
-        }
-
-function updateUI() {
-    if (isPowerOn && isReallyConnected) {  // NEW: Check real connection state
-        controls.classList.add(...controlsActiveClasses);
-        powerIcon.classList.add(...powerIconActiveClasses);
-        powerIcon.classList.add('power-on-svg'); // Glow around the SVG icon
-    } else {
-        controls.classList.remove(...controlsActiveClasses);
-        powerIcon.classList.remove(...powerIconActiveClasses);
-        powerIcon.classList.remove('power-on-svg'); // Remove glow
-        isFlashing = false;
-    }
-
-    if (isFlashing && isReallyConnected) flashBtn.classList.add('flash-on'); else flashBtn.classList.remove('flash-on');
-    toggleSettingsButton(isFlashing && isReallyConnected);
-}
-
-
-
-        function getLogValue(linear, min, max) {
-            const logMin = Math.log(min);
-            const logMax = Math.log(max);
-            const scale = (logMax - logMin) / (max - min);
-            return Math.exp(logMin + (linear - min) * scale);
-        }
-
-        function getLinearValue(log, min, max) {
-            const logMin = Math.log(min);
-            const logMax = Math.log(max);
-            const scale = (logMax - logMin) / (max - min);
-            return ((Math.log(log) - logMin) / scale) + min;
-        }
-
-        function snapToNearestValue(value) {
-            return snapValues.reduce((prev, curr) =>
-                Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
-            );
-        }
-
-        function updateSlider(slider, input) {
-            const min = parseFloat(slider.min);
-            const max = parseFloat(slider.max);
-            const linear = parseFloat(slider.value);
-            
-            let logValue = Math.round(getLogValue(linear, min, max));
-            const snapValue = snapToNearestValue(logValue);
-            
-            if (Math.abs(logValue - snapValue) <= SNAP_THRESHOLD) {
-                logValue = snapValue;
-                slider.value = getLinearValue(logValue, min, max);
-            }
-            
-            input.value = logValue;
-            
-            const percent = (slider.value - min) / (max - min) * 100;
-            slider.style.background = `linear-gradient(to right, #0ea5e9 0%, #0ea5e9 ${percent}%, #888 ${percent}%, #888 100%)`;
-        }
-
-        function setupSlider(slider, input) {
-            let lastValue = input.value;
-            
-            slider.addEventListener('input', () => {
-                updateSlider(slider, input);
-                if (input.value !== lastValue) {
-                    lastValue = input.value;
-
-                }
-            });
-            
-            input.addEventListener('input', () => {
-                const value = Math.max(50, Math.min(10000, parseInt(input.value) || 50));
-                input.value = value;
-                slider.value = getLinearValue(value, 50, 10000);
-                updateSlider(slider, input);
-                if (value !== lastValue) {
-                    lastValue = value;
-
-                }
-            });
-            updateSlider(slider, input);
-        }
-
-        function openModal(modal) {
-            // Close current modal if one is open
-            if (currentModal && currentModal !== modal) {
-                closeModal(currentModal);
-            }
-            currentModal = modal;
-            modal.showModal();
-            setTimeout(() => {
-                modal.classList.add('is-open');
-                modal.classList.remove('is-closing');
-            }, 10);
-        }
-
-        function openIconModal() {
-            openModal(iconModal);
-
-            // Clear any old selections
-            document.querySelectorAll('.icon-option').forEach((opt, idx) => {
-                opt.classList.toggle('selected', idx === currentDeviceIcon);
-            });
-        }
-
-
-        function closeModal(modal) {
-            if (modal === currentModal) {
-                currentModal = null;
-            }
-            modal.classList.add('is-closing');
-            modal.classList.remove('is-open');
-            modal.addEventListener('transitionend', () => {
-                modal.close();
-                modal.classList.remove('is-closing');
-            }, { once: true });
-        }
-
-        // Power switch handler - UPDATED to check connection
-        powerSwitch.addEventListener('change', () => {
-            if (!isReallyConnected) {
-                powerSwitch.checked = false;  // Reset checkbox
-                createNotification('warning', 'Not Connected', 'Please connect to device first');
-                return;
-            }
-            isPowerOn = powerSwitch.checked;
-            vibrate();
-            updateUI();
-            if (powerSwitch.checked) ActionHandler.powerOn();
-            else ActionHandler.powerOff();
-        });
-
-        // Flash button handler - UPDATED to check connection
-        flashBtn.addEventListener('click', () => {
-            if (!isPowerOn || !isReallyConnected) return;
-            vibrate();
-            isFlashing = !isFlashing;
-            updateUI();
-            if (isFlashing) {
-                ActionHandler.flashOn();
-            } else {
-                ActionHandler.flashOff();
-            }
-        });
-
-        // Settings modal handlers - UPDATED to check connection
-        settingsBtn.addEventListener('click', () => {
-            if (!isReallyConnected) return;
-            vibrate();
-            openModal(settingsModal);
-        });
-
-        closeModalBtn.addEventListener('click', () => {
-            vibrate();
-            closeModal(settingsModal);
-            if (isReallyConnected) {
-                const onTime = parseInt(onTimeInput.value, 10);
-                const offTime = parseInt(offTimeInput.value, 10);
-                ActionHandler.flashSettingsSaved(onTime, offTime);
-            }
-        });
-
-        // Info modal handlers
-        infoBtn.addEventListener('click', () => {
-            vibrate();
-            openModal(infoModal);
-        });
-
-        closeInfoModalBtn.addEventListener('click', () => {
-            vibrate();
-            closeModal(infoModal);
-        });
-
-        // Connection status click handler to show device list
-        connectionStatus.addEventListener('click', () => {
-            vibrate();
-            openModal(deviceModal);
-        });
-
-        // Device modal handlers
-        closeDeviceModalBtn.addEventListener('click', () => {
-            vibrate();
-            closeModal(deviceModal);
-        });
-
-        // Device item click handler (only for the main area, not icon or edit button)
-        deviceItem.addEventListener('click', (e) => {
-            if (e.target === deviceIcon || e.target === editIcon || e.target === disconnectBtn || e.target.closest('#disconnect-btn') || e.target.closest('#edit-icon')) {
-                return;
-            }
-            if (!isConnected) {
-                vibrate();
-                attemptConnection();
-            }
-        });
-
-        // Disconnect button handler
-        disconnectBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            vibrate();
-            updateConnectionStatus(false);
-            ActionHandler.disconnected(currentDeviceName);
-        });
-
-        // Device icon click handler
-        deviceIcon.addEventListener('click', (e) => {
-            e.stopPropagation();
-            vibrate();
-            selectedIconIndex = currentDeviceIcon;
-            populateIconGrid();
-            openModal(iconModal);
-        });
-
-        editIcon.addEventListener('click', (e) => {
-            e.stopPropagation();
-            vibrate();
-            hideTooltip();
-            nameInput.value = currentDeviceName;
-            openModal(editNameModal);
-        });
-
-        // Edit name modal handlers
-        cancelNameBtn.addEventListener('click', () => {
-            vibrate();
-            closeModal(editNameModal);
-            openModal(deviceModal);
-        });
-
-        saveNameBtn.addEventListener('click', () => {
-            vibrate();
-            const newName = nameInput.value.trim();
-            if (newName && newName !== currentDeviceName) {
-                const oldName = currentDeviceName;
-                currentDeviceName = newName;
-                localStorage.setItem('deviceName', currentDeviceName);
-                updateDeviceName();
-                createNotification('success', 'Name Updated', `Device renamed from "${oldName}" to "${currentDeviceName}"`);
-            } else if (newName === currentDeviceName) {
-                createNotification('info', 'No Changes', 'Device name was not changed');
-            } else {
-                createNotification('warning', 'Invalid Name', 'Please enter a valid device name');
-                return;
-            }
-            closeModal(editNameModal);
-            openModal(deviceModal);
-        });
-
-        // Icon modal handlers
-        cancelIconBtn.addEventListener('click', () => {
-            vibrate();
-            closeModal(iconModal);
-            openModal(deviceModal);
-        });
-
-               const nameCharCount = document.getElementById('name-char-count');
-
-                nameInput.addEventListener('input', () => {
-            if (nameInput.value.length > MAX_NAME_LENGTH) {
-                nameInput.value = nameInput.value.slice(0, MAX_NAME_LENGTH);
-            }
-            nameCharCount.textContent = `${nameInput.value.length}/${MAX_NAME_LENGTH}`;
-        });
-
-
-        applyIconBtn.addEventListener('click', () => {
-            vibrate();
-            if (selectedIconIndex !== currentDeviceIcon) {
-                currentDeviceIcon = selectedIconIndex;
-                localStorage.setItem('deviceIcon', currentDeviceIcon);
                 updateDeviceIcon();
-                createNotification('success', 'Icon Updated', 'Device icon has been changed');
-            } else {
-                createNotification('info', 'No Changes', 'Device icon was not changed');
-            }
-            closeModal(iconModal);
-                openModal(deviceModal);
-        });
-
-        // Connect modal handlers
-        closeConnectModalBtn.addEventListener('click', () => {
-            vibrate();
-            stopConnectingAnimation();
-            closeModal(connectModal);
-        });
-
-        // Initialize sliders
-        setupSlider(onTimeSlider, onTimeInput);
-        setupSlider(offTimeSlider, offTimeInput);
-
-        // Initialize with disconnected state
-        updateConnectionStatus(false);
-        updateDeviceName();
-        updateDeviceIcon();
-        updateUI();
-        populateIconGrid();
-
-
-    </script>
-</body>
-</html>
+                updateUI();
+                
+                // If previously connected, attempt to reconnect
+                if (isReallyConnected) {
+                    updateConnectionStatus(true, true);
+                    attemptConnection();
+                } else {
+                    updateConnectionStatus(false);
+                }
+                populateIconGrid();
+        
+        
+            </script>
+        </body>
+        </html>
